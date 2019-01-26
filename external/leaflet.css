@@ -343,12 +343,12 @@
 	border-radius: 5px;
 	}
 .leaflet-control-layers-toggle {
-	background-image: url(images/layers.png);
+	background-image: url(@@INCLUDEIMAGE:images/layers.png@@);
 	width: 36px;
 	height: 36px;
 	}
 .leaflet-retina .leaflet-control-layers-toggle {
-	background-image: url(images/layers-2x.png);
+	background-image: url(@@INCLUDEIMAGE:images/layers-2x.png@@);
 	background-size: 26px 26px;
 	}
 .leaflet-touch .leaflet-control-layers-toggle {
@@ -387,9 +387,10 @@
 	margin: 5px -10px 5px -6px;
 	}
 
+
 /* Default icon URLs */
-.leaflet-default-icon-path {
-	background-image: url(images/marker-icon.png);
+.leaflet-default-icon-path { /* IITC: Is's dummy style used in Icon.Default._detectIconPath */
+	background-image: url(images/marker-icon.png); /* IITC: No need to patch it here */
 	}
 
 /* attribution and scale controls */
