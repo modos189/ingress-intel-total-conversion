@@ -1650,7 +1650,7 @@ var Earth = extend({}, CRS, {
 
 var SphericalMercator = {
 
-	R: 6378137,
+	R: 6367000,
 	MAX_LATITUDE: 85.0511287798,
 
 	project: function (latlng) {
@@ -1673,7 +1673,7 @@ var SphericalMercator = {
 	},
 
 	bounds: (function () {
-		var d = 6378137 * Math.PI;
+		var d = 6367000 * Math.PI;
 		return new Bounds([-d, -d], [d, d]);
 	})()
 };
@@ -6331,7 +6331,7 @@ var LonLat = {
  */
 
 var Mercator = {
-	R: 6378137,
+	R: 6367000,
 	R_MINOR: 6356752.314245179,
 
 	bounds: new Bounds([-20037508.34279, -15496570.73972], [20037508.34279, 18764656.23138]),
