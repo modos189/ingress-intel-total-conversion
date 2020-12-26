@@ -53,6 +53,7 @@ public class IITC_WebView extends WebView {
 
         mSettings = getSettings();
         mSettings.setJavaScriptEnabled(true);
+        mSettings.setSupportMultipleWindows(true);
         mSettings.setDomStorageEnabled(true);
         mSettings.setAllowFileAccess(true);
         mSettings.setGeolocationEnabled(true);
