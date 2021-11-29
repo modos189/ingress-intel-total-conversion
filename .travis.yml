@@ -52,13 +52,13 @@ deploy:
   # deploy beta to google play
   - provider: script
     skip_cleanup: true
-    script: ./fastlane/push.py
+    script: ./fastlane/push.sh
     on:
       branch: master
 
   # deploy release to google play
   - provider: script
     skip_cleanup: true
-    script: ./fastlane/push.py
+    script: ./fastlane/push.sh
     on:
       tags: true
