@@ -48,30 +48,11 @@ before_script:
 script: ./build.py $BUILD_TYPE
 
 deploy:
-  # deploy to iitc site
-  - provider: script
-    skip_cleanup: true
-    script: curl -s https://iitc.app/deploy/deploy.sh | bash -s -- $BUILD_TYPE
-    on:
-      all_branches: true
 
   # deploy to google play
   - provider: script
     skip_cleanup: true
-    script: if [[ "$TRAVIS_COMMIT_MESSAGE" != *"[Release]"* || "$BUILD_TYPE" == "release" ]]; then bundle exec fastlane deploy_$BUILD_TYPE; fi
+    script: if [[ "$TRAVIS_COMMIT_MESSAGE" != *"[Release]"* || "$BUILD_TYPE" == "release" ]]; then echo "bundle exec fastlane"; bundle exec fastlane deploy_$BUILD_TYPE; else echo "bundle else"; fi
     on:
       branch: master
-      tags: true
-
-  # deploy to github releases
-  - provider: releases
-    skip_cleanup: true
-    name: $TRAVIS_TAG
-    api_key:
-      secure: KoJXTxCoatpFbQgbW1VBIh1ndtQIEmj68sANI+zOs54vi9XMCG3RM4cFn4y7YsSI/kz6XcoSC30SNnqedxHMPJyjrIWvVLKDTlbJswZmGhsslrZmClw3sFROKodVI5DoI0520mAfwzQ5PInPpSEfsPZQhA9ufv1wTZ/98q2efcRPu3J6riSdOZmqJ2A+veWpID3t3P57Lcjew+P3PdmUpwC9t6Yp4oQaYX4DZvMMpqK6s8E4EfOVQptaFAxYDIlAIWxNsfIJkx3jwmLdyaSwQL/fyesQ3fZRECKZTN7RM8/2nImuBZsq4uKS3nrKpLEXFTId45ET5N0fa23KXMLMM8NW0LlATLLWju+N7dP2HCeV5w2wxh+ToAR58XciiZLIsxI1IfF8WXloPax6DmJYksEKOenMYB/y/VASi5xbEhl89kdkxAaO6hAoVqKYo+xt7y3nPGSDUf+zfJnno5lPXgF3ctVAjmRBTWUSQQ5VhAeOp2LGg8ennzSkaLKxqyIxJ7F+n7Y0/QmG0uQzmerOjEEjVBsyVawRWjZGrDlog3Pq2S0n4vnbvbtUchwp/Fapjtg1f1pWy9Bzi1tnnE4ALJEmM894izxWH4vtDQu1+nkjKtLrkxgjk5yEuPj3n95ab64UO1To/x4YlyApmLkDeZIEMd+5siBTeGlB1V05Mr4=
-    file_glob: true
-    file:
-    - ./build/release/*.apk
-    - ./build/release/*.zip
-    on:
       tags: true
