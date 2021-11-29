@@ -49,10 +49,16 @@ script: ./build.py $BUILD_TYPE
 
 deploy:
 
-  # deploy to google play
+  # deploy beta to google play
   - provider: script
     skip_cleanup: true
     script: ./fastlane/push.py
     on:
       branch: master
+
+  # deploy release to google play
+  - provider: script
+    skip_cleanup: true
+    script: ./fastlane/push.py
+    on:
       tags: true
