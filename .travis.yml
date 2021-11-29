@@ -52,7 +52,7 @@ deploy:
   # deploy to google play
   - provider: script
     skip_cleanup: true
-    script: if [[ "$TRAVIS_COMMIT_MESSAGE" != *"[Release]"* || "$BUILD_TYPE" == "release" ]]; then echo "bundle exec fastlane"; bundle exec fastlane deploy_$BUILD_TYPE; else echo "bundle else"; fi
+    script: ./fastlane/push.py
     on:
       branch: master
       tags: true
