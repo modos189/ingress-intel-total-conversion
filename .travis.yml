@@ -8,6 +8,11 @@ branches:
     - test-builds
     - /^v([0-9]+)\.([0-9]+).*$/
 
+env:
+  global:
+    # for updates check developer.android.com/studio#downloads (current 26.1.1)
+    - ANDROID_SDK_TOOLS=commandlinetools-linux-8512546_latest.zip
+
 addons:
   apt:
     packages: python3.7 python3-apt android-sdk
@@ -33,7 +38,11 @@ jobs:
 before_install:
   # set JAVA_HOME path
   - export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
-  # set ANDROID_HOME path
+  # download and unzip Android SDK command line tools
+  - wget -nv https://dl.google.com/android/repository/$ANDROID_SDK_TOOLS
+  - unzip -q $ANDROID_SDK_TOOLS -d $HOME/sdk
+  # set SDK tools path variable and ANDROID_HOME
+  - export PATH=$PATH:$HOME/sdk/tools/bin
   - export ANDROID_HOME=$HOME/sdk
   # create empty cfg file to prevent sdkmanager warning message
   - mkdir -p $HOME/.android && touch $HOME/.android/repositories.cfg
