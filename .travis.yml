@@ -10,6 +10,7 @@ branches:
 
 android:
   components:
+  - android-26
   - platform-tools
   - tools
   - build-tools-30.0.0
