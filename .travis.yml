@@ -51,8 +51,9 @@ before_install:
 
 install:
   - ls $HOME/sdk/cmdline-tools/bin
+  - echo "PATH=$PATH"
   # accept licenses for all available packages that have not already been accepted
-  - yes | sdkmanager --licenses >/dev/null
+  - yes | $HOME/sdk/cmdline-tools/bin/sdkmanager --licenses >/dev/null
 
 before_script:
   # set executable flag for gradle wrapper
