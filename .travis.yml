@@ -15,7 +15,7 @@ env:
 
 addons:
   apt:
-    packages: python3.7 python3-apt android-sdk
+    packages: python3.7 python3-apt android-sdk openjdk-8-jdk
   ssh_known_hosts: ssh.iitc.app
 
 notifications:
