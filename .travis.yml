@@ -42,7 +42,7 @@ before_install:
   - wget -nv https://dl.google.com/android/repository/$ANDROID_SDK_TOOLS
   - unzip -q $ANDROID_SDK_TOOLS -d $HOME/sdk
   # set SDK tools path variable and ANDROID_HOME
-  - export PATH=$PATH:$HOME/sdk/tools/bin
+  - export PATH=$PATH:$HOME/sdk/cmdline-tools/bin
   - export ANDROID_HOME=$HOME/sdk
   # create empty cfg file to prevent sdkmanager warning message
   - mkdir -p $HOME/.android && touch $HOME/.android/repositories.cfg
