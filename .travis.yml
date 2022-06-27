@@ -44,7 +44,7 @@ before_install:
   - unzip -q $ANDROID_SDK_TOOLS -d $HOME/sdk/cmdline-tools
   - mv $HOME/sdk/cmdline-tools/cmdline-tools $HOME/sdk/cmdline-tools/tools
   # set SDK tools path variable and ANDROID_HOME
-  - export PATH=$PATH:$HOME/sdk/cmdline-tools/bin
+  - export PATH=$PATH:$HOME/sdk/cmdline-tools/tools/bin
   - export ANDROID_HOME=$HOME/sdk
   # create empty cfg file to prevent sdkmanager warning message
   - mkdir -p $HOME/.android && touch $HOME/.android/repositories.cfg
