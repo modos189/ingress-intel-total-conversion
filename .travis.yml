@@ -50,6 +50,7 @@ before_install:
   - bundle install --path vendor/bundle
 
 install:
+  - ls $HOME/sdk/cmdline-tools/bin
   # accept licenses for all available packages that have not already been accepted
   - yes | sdkmanager --licenses >/dev/null
 
