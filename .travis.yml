@@ -15,7 +15,7 @@ env:
 
 addons:
   apt:
-    packages: python3.7 python3-apt android-sdk openjdk-8-jdk gradle
+    packages: python3.7 python3-apt android-sdk openjdk-8-jdk
   ssh_known_hosts: ssh.iitc.app
 
 notifications:
@@ -58,15 +58,6 @@ install:
   - yes | sdkmanager --licenses
 
 before_script:
-  # set executable flag for gradle wrapper
-  - chmod +x gradlew
-  # create dir for gradle settings
-  - mkdir -p $HOME/.gradle
-  # disable gradle daemon for current user
-  - echo "org.gradle.daemon=false" >> $HOME/.gradle/gradle.properties
-  # set gradle log format to plain
-  - echo "org.gradle.console=plain" >> $HOME/.gradle/gradle.properties
-  # download localbuildsettings.py file
   - wget https://iitc.app/deploy/localbuildsettings.py
 
 script: ./build.py $BUILD_TYPE
