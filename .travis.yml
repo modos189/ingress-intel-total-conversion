@@ -52,7 +52,7 @@ before_install:
   - bundle install --path vendor/bundle
 
 install:
-  - ls $HOME/sdk/cmdline-tools/bin
+  - ls $HOME/sdk/cmdline-tools/tools/bin
   - echo "PATH=$PATH"
   # accept licenses for all available packages that have not already been accepted
   - yes | sdkmanager --licenses
