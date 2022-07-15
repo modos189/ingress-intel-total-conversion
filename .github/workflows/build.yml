@@ -67,8 +67,14 @@ jobs:
             ${{ env.ARTIFACT_IITC_MOBILE }}
             ${{ env.ARTIFACT_IITC_ZIP }}
 
+      - name: ls ./build
+        run: ls ./build/
+
       - name: ls build
-        run: ls -l build/
+        run: ls build/
+
+      - name: ls build
+        run: ls build/${{ env.BUILD_TYPE }}
 
       - name: Push build artifacts to website
         env:
