@@ -30,11 +30,11 @@ jobs:
         run: |
           if [[ $GITHUB_EVENT_NAME == 'push' ]]; then
             if [[ $BRANCH == 'master' ]]; then
-                echo "BUILD_TYPE='beta'" >> "$GITHUB_ENV"
-                echo "ARCHIVE_DIR='beta_archive'" >> "$GITHUB_ENV"
+                echo "BUILD_TYPE=beta" >> "$GITHUB_ENV"
+                echo "ARCHIVE_DIR=beta_archive" >> "$GITHUB_ENV"
             else
-                echo "BUILD_TYPE='release'" >> "$GITHUB_ENV"
-                echo "ARCHIVE_DIR='release_archive'" >> "$GITHUB_ENV"
+                echo "BUILD_TYPE=release" >> "$GITHUB_ENV"
+                echo "ARCHIVE_DIR=release_archive" >> "$GITHUB_ENV"
             fi
           else
               echo "BUILD_TYPE='test-builds'" >> "$GITHUB_ENV"
