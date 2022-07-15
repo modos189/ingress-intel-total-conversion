@@ -76,6 +76,7 @@ jobs:
         with:
           source_file: "./build/${{ env.BUILD_TYPE }}/*"
           destination_repo: ${{ secrets.WEBSITE_REPO }}
+          destination_branch: master
           destination_folder: 'static/build/${{ env.ARCHIVE_DIR }}/1/'
           user_email: 'example@email.com'
           user_name: 'IITC Builds'
