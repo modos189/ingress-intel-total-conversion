@@ -83,4 +83,5 @@ jobs:
           destination_branch: master
           destination_folder: 'static/build/${{ env.ARCHIVE_DIR }}/${{ env.BUILDSTAMP }}/'
           user_email: 'example@email.com'
-          user_name: '🤖 New IITC ${{ env.BUILD_TYPE }} build'
+          user_name: 'IITC Updates'
+          commit_message: '🤖 New IITC ${{ env.BUILD_TYPE }} build'
