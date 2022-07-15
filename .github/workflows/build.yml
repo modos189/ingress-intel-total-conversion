@@ -10,7 +10,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v2
 
@@ -26,20 +25,22 @@ jobs:
           cache: 'pip'
       - run: pip install -r requirements.txt
 
-      - name: Set environment variable for BETA
-        if: github.event_name == "push" && github.ref == "refs/heads/master"
-        env:
-          - BUILD_TYPE="beta"
-          - ARCHIVE_DIR="beta_archive"
-      - name: Set environment variable for RELEASE
-        if: github.event_name == "push" && github.ref != "refs/heads/master"
-        env:
-          - BUILD_TYPE="release"
-          - ARCHIVE_DIR="release_archive"
-      - name: Set environment variable for TEST-BUILDS
-        if: github.event_name == "pull_request"
-        env:
-          - BUILD_TYPE="test-builds"
+      - name: Set env BRANCH
+        run: echo "BRANCH=$(echo $GITHUB_REF | cut -d'/' -f 3)" >> $GITHUB_ENV
+
+      - name: Set env BUILD_TYPE and ARCHIVE_DIR (optional)
+        run: |
+          if [[ $GITHUB_EVENT_NAME == 'push' ]]; then
+            if [[ $BRANCH == 'master' ]]; then
+                echo "BUILD_TYPE='beta'" >> "$GITHUB_ENV"
+                echo "ARCHIVE_DIR='beta_archive'" >> "$GITHUB_ENV"
+            else
+                echo "BUILD_TYPE='release'" >> "$GITHUB_ENV"
+                echo "ARCHIVE_DIR='release_archive'" >> "$GITHUB_ENV"
+            fi
+          else
+              echo "BUILD_TYPE='test-builds'" >> "$GITHUB_ENV"
+          fi
 
       - name: Download localbuildsettings.py
         run: wget https://iitc.app/deploy/localbuildsettings.py
