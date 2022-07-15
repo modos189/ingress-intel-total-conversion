@@ -53,9 +53,8 @@ jobs:
       - name: Set env with artifacts
         if: ${{ github.event_name == 'pull_request' }}
         run: |
-          echo "ARTIFACT_IITC_MOBILE=$( ls -d ./build/mobile/* | grep '.apk' )" >> "$GITHUB_ENV"
-          echo "ARTIFACT_IITC_ZIP=$( ls -d ./build/mobile/* | grep '.zip' )" >> "$GITHUB_ENV"
-
+          echo "ARTIFACT_IITC_MOBILE=$( ls -d ./build/${{ env.BUILD_TYPE }}/* | grep '.apk' )" >> "$GITHUB_ENV"
+          echo "ARTIFACT_IITC_ZIP=$( ls -d ./build/${{ env.BUILD_TYPE }}/* | grep '.zip' )" >> "$GITHUB_ENV"
 
       - name: Push artifacts to PR
         if: ${{ github.event_name == 'pull_request' }}
@@ -65,5 +64,17 @@ jobs:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           artifacts-branch: artifacts
           artifacts: |
-            ${{ ARTIFACT_IITC_MOBILE }}
-            ${{ ARTIFACT_IITC_ZIP }}
+            ${{ env.ARTIFACT_IITC_MOBILE }}
+            ${{ env.ARTIFACT_IITC_ZIP }}
+
+      - name: Push build artifacts to website
+        if: ${{ github.event_name == 'push' && secrets.WEBSITE_REPO }}
+        uses: dmnemec/copy_file_to_another_repo_action@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+        with:
+          source_file: "./build/${{ env.BUILD_TYPE }}/*"
+          destination_repo: ${{ secrets.WEBSITE_REPO }}
+          destination_folder: 'static/build/${{ env.ARCHIVE_DIR }}/1/'
+          user_email: 'example@email.com'
+          user_name: 'IITC Builds'
