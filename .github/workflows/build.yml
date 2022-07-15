@@ -67,6 +67,9 @@ jobs:
             ${{ env.ARTIFACT_IITC_MOBILE }}
             ${{ env.ARTIFACT_IITC_ZIP }}
 
+      - name: ls build
+        run: ls -l build/
+
       - name: Push build artifacts to website
         env:
           WEBSITE_REPO: ${{ secrets.WEBSITE_REPO }}
@@ -74,7 +77,7 @@ jobs:
         if: ${{ github.event_name == 'push' && env.WEBSITE_REPO != '' }}
         uses: dmnemec/copy_file_to_another_repo_action@main
         with:
-          source_file: "./build/${{ env.BUILD_TYPE }}/*"
+          source_file: "build/${{ env.BUILD_TYPE }}/*"
           destination_repo: ${{ secrets.WEBSITE_REPO }}
           destination_branch: master
           destination_folder: 'static/build/${{ env.ARCHIVE_DIR }}/1/'
