@@ -1,4 +1,4 @@
-name: Build IITC Button
+name: Build IITC and push artifacts
 
 on:
   push:
@@ -22,8 +22,6 @@ jobs:
       - uses: actions/setup-python@v4
         with:
           python-version: '3.9'
-          cache: 'pip'
-      - run: pip install -r requirements.txt
 
       - name: Set env BRANCH
         run: echo "BRANCH=$(echo $GITHUB_REF | cut -d'/' -f 3)" >> $GITHUB_ENV
