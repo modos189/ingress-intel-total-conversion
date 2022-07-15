@@ -84,4 +84,4 @@ jobs:
           destination_folder: 'static/build/${{ env.ARCHIVE_DIR }}/${{ env.BUILDSTAMP }}/'
           user_email: 'example@email.com'
           user_name: 'IITC Updates'
-          commit_message: '🤖 New IITC ${{ env.BUILD_TYPE }} build\nfrom https://github.com/${GITHUB_REPOSITORY}/commit/${GITHUB_SHA}'
+          commit_message: '🤖 New IITC ${{ env.BUILD_TYPE }} build from https://github.com/${{ github.event.repository.name }}/commit/${{ github.sha }}'
