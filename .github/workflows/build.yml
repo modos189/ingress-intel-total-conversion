@@ -67,14 +67,9 @@ jobs:
             ${{ env.ARTIFACT_IITC_MOBILE }}
             ${{ env.ARTIFACT_IITC_ZIP }}
 
-      - name: ls ./build
-        run: ls ./build/
-
-      - name: ls build
-        run: ls build/
-
-      - name: ls build
-        run: ls build/${{ env.BUILD_TYPE }}
+      - name: Set env BUILDSTAMP
+        run: |
+          echo "BUILDSTAMP=$(date -u +'%Y-%m-%d_%H-%M' -d'$(stat -c %y ./build/${{ env.BUILD_TYPE }}/total-conversion-build.user.js)')" >> "$GITHUB_ENV"
 
       - name: Push build artifacts to website
         env:
@@ -86,6 +81,6 @@ jobs:
           source_file: "./build/${{ env.BUILD_TYPE }}/"
           destination_repo: ${{ secrets.WEBSITE_REPO }}
           destination_branch: master
-          destination_folder: 'static/build/${{ env.ARCHIVE_DIR }}/1/'
+          destination_folder: 'static/build/${{ env.ARCHIVE_DIR }}/${{ env.BUILDSTAMP }}/'
           user_email: 'example@email.com'
-          user_name: 'IITC Builds'
+          user_name: '🤖 New IITC ${{ env.BUILD_TYPE }} build'
