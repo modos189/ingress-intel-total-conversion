@@ -45,4 +45,7 @@ jobs:
 
       - name: Run build.py
         run: ./build.py $BUILD_TYPE
-
+        env:
+          KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
+          ALIAS_NAME: ${{ secrets.ALIAS_NAME }}
+          ALIAS_PASS: ${{ secrets.ALIAS_PASS }}
