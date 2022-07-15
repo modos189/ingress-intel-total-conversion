@@ -69,7 +69,7 @@ jobs:
 
       - name: Set env BUILDSTAMP
         run: |
-          echo "BUILDSTAMP=$(date -u +'%Y-%m-%d_%H-%M' -d\"$(stat -c %y ./build/${{ env.BUILD_TYPE }}/total-conversion-build.user.js)\")" >> "$GITHUB_ENV"
+          echo "BUILDSTAMP=$(date -u +'%Y-%m-%d_%H-%M' -d"$(stat -c %y ./build/${{ env.BUILD_TYPE }}/total-conversion-build.user.js)")" >> "$GITHUB_ENV"
 
       - name: Push build artifacts to website
         env:
