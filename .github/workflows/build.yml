@@ -50,6 +50,13 @@ jobs:
           ALIAS_NAME: ${{ secrets.ALIAS_NAME }}
           ALIAS_PASS: ${{ secrets.ALIAS_PASS }}
 
+      - name: Set env with artifacts
+        if: ${{ github.event_name == 'pull_request' }}
+        run: |
+          echo "ARTIFACT_IITC_MOBILE=$( ls -d ./build/mobile/* | grep '.apk' )" >> "$GITHUB_ENV"
+          echo "ARTIFACT_IITC_ZIP=$( ls -d ./build/mobile/* | grep '.zip' )" >> "$GITHUB_ENV"
+
+
       - name: Push artifacts to PR
         if: ${{ github.event_name == 'pull_request' }}
         uses: gavv/pull-request-artifacts@v1.0.0
@@ -58,4 +65,5 @@ jobs:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           artifacts-branch: artifacts
           artifacts: |
-            ./build/release/*.apk
+            ${{ ARTIFACT_IITC_MOBILE }}
+            ${{ ARTIFACT_IITC_ZIP }}
