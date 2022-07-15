@@ -1,0 +1,49 @@
+name: Build IITC Button
+
+on:
+  push:
+    branches:
+      - master
+      - "v[0-9]*.[0-9]*.[0-9]*"
+    pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '11'
+          cache: 'gradle'
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+          cache: 'pip'
+      - run: pip install -r requirements.txt
+
+      - name: Set environment variable for BETA
+        if: github.event_name == "push" && github.ref == "refs/heads/master"
+        env:
+          - BUILD_TYPE="beta"
+          - ARCHIVE_DIR="beta_archive"
+      - name: Set environment variable for RELEASE
+        if: github.event_name == "push" && github.ref != "refs/heads/master"
+        env:
+          - BUILD_TYPE="release"
+          - ARCHIVE_DIR="release_archive"
+      - name: Set environment variable for TEST-BUILDS
+        if: github.event_name == "pull_request"
+        env:
+          - BUILD_TYPE="test-builds"
+
+      - name: Download localbuildsettings.py
+        run: wget https://iitc.app/deploy/localbuildsettings.py
+
+      - name: Run build.py
+        run: ./build.py $BUILD_TYPE
+
