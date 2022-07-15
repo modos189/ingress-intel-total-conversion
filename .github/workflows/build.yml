@@ -4,12 +4,15 @@ on:
   push:
     branches:
       - master
-      - "v[0-9]*.[0-9]*.[0-9]*"
+    tags:
+      - '*'
   pull_request:
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v2
 
@@ -28,7 +31,7 @@ jobs:
 
       - name: Set env BUILD_TYPE and ARCHIVE_DIR (optional)
         run: |
-          if [[ $GITHUB_EVENT_NAME == 'push' ]]; then
+          if [[ $GITHUB_EVENT_NAME == 'push' && $BRANCH == 'master' ]]; then
             if [[ $BRANCH == 'master' ]]; then
                 echo "BUILD_TYPE=beta" >> "$GITHUB_ENV"
                 echo "ARCHIVE_DIR=beta_archive" >> "$GITHUB_ENV"
@@ -85,3 +88,12 @@ jobs:
           user_email: 'example@email.com'
           user_name: 'IITC Updates'
           commit_message: '🤖 New IITC ${{ env.BUILD_TYPE }} build from https://github.com/${{ github.repository }}/commit/${{ github.sha }}'
+
+      - uses: ncipollo/release-action@v1
+        if: startsWith(github.ref, 'refs/tags/v')
+        with:
+          artifactErrorsFailBuild: true
+          artifacts: "./build/${{ env.BUILD_TYPE }}/*.zip,./build/${{ env.BUILD_TYPE }}/*.apk"
+          draft: true
+          generateReleaseNotes: true
+          token: ${{ secrets.GITHUB_TOKEN }}
