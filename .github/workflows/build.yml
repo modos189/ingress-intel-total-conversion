@@ -31,7 +31,7 @@ jobs:
 
       - name: Set env BUILD_TYPE and ARCHIVE_DIR (optional)
         run: |
-          if [[ $GITHUB_EVENT_NAME == 'push' && $BRANCH == 'master' ]]; then
+          if [[ $GITHUB_EVENT_NAME == 'push' ]]; then
             if [[ $BRANCH == 'master' ]]; then
                 echo "BUILD_TYPE=beta" >> "$GITHUB_ENV"
                 echo "ARCHIVE_DIR=beta_archive" >> "$GITHUB_ENV"
@@ -95,6 +95,4 @@ jobs:
           allowUpdates: true
           artifactErrorsFailBuild: true
           artifacts: "./build/${{ env.BUILD_TYPE }}/*.zip,./build/${{ env.BUILD_TYPE }}/*.apk"
-          draft: true
-          generateReleaseNotes: true
           token: ${{ secrets.GITHUB_TOKEN }}
