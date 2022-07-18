@@ -56,14 +56,11 @@ jobs:
           echo "ARTIFACT_IITC_MOBILE=$( ls -d ./build/${{ env.BUILD_TYPE }}/* | grep '.apk' )" >> "$GITHUB_ENV"
           echo "ARTIFACT_IITC_ZIP=$( ls -d ./build/${{ env.BUILD_TYPE }}/* | grep '.zip' )" >> "$GITHUB_ENV"
 
-      - name: Push artifacts to PR
+      - uses: actions/upload-artifact@v3
         if: ${{ github.event_name == 'pull_request' }}
-        uses: gavv/pull-request-artifacts@v1.0.0
         with:
-          commit: ${{ github.event.pull_request.head.sha }}
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          artifacts-branch: artifacts
-          artifacts: |
+          name: Builds artifacts
+          path: |
             ${{ env.ARTIFACT_IITC_MOBILE }}
             ${{ env.ARTIFACT_IITC_ZIP }}
 
