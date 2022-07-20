@@ -43,8 +43,8 @@ jobs:
         run: |
           echo "PR_NUMBER=$(cat ./.metadata/number)" >> "$GITHUB_ENV"
           echo "COMMIT_HASH=$(cat ./.metadata/commit)" >> "$GITHUB_ENV"
-          echo "BUILD_APK=$(cat ./.metadata/apk)" >> "$GITHUB_ENV"
-          echo "BUILD_ZIP=$(cat ./.metadata/zip)" >> "$GITHUB_ENV"
+          echo "BUILD_APK_FILENAME=$(cat ./.metadata/apk_filename)" >> "$GITHUB_ENV"
+          echo "BUILD_ZIP_FILENAME=$(cat ./.metadata/zip_filename)" >> "$GITHUB_ENV"
           echo "BUILDSTAMP=$(cat ./.metadata/buildstamp)" >> "$GITHUB_ENV"
 
       - name: Push build artifacts to website
@@ -62,7 +62,7 @@ jobs:
           user_name: 'IITC Updates'
           commit_message: '🤖 New IITC test build from https://github.com/${{ github.repository }}/commit/${{ github.sha }}'
 
-      - name: Comment with release url
+      - name: Comment with build url
         uses: marocchino/sticky-pull-request-comment@v2
         with:
           header: pr_release
@@ -71,6 +71,6 @@ jobs:
             ## 🤖 Pull request artifacts
             | file | commit |
             | ---- | ------ |
-            | [`${{ env.BUILD_APK }}`](https://github.com/) | ${{ env.COMMIT_HASH }} |
-            | [`${{ env.BUILD_ZIP }}`](https://github.com/) | ${{ env.COMMIT_HASH }} |
-            [Build on website](https://iitc.app/build/artifact/PR${{ env.PR_NUMBER }}/)
+            | [`${{ env.BUILD_APK_FILENAME }}`](https://github.com/${{ secrets.WEBSITE_REPO }}/raw/master/static/build/artifact/PR${{ env.PR_NUMBER }}/${{ env.BUILD_APK_FILENAME }}) | ${{ env.COMMIT_HASH }} |
+            | [`${{ env.BUILD_ZIP_FILENAME }}`](https://github.com/${{ secrets.WEBSITE_REPO }}/raw/master/static/build/artifact/PR${{ env.PR_NUMBER }}/${{ env.BUILD_ZIP_FILENAME }}) | ${{ env.COMMIT_HASH }} |
+            [ See build on website](https://iitc.app/build/artifact/PR${{ env.PR_NUMBER }}/) | ${{ env.COMMIT_HASH }} |

@@ -39,8 +39,8 @@ jobs:
           mkdir -p ./build/.metadata
           echo ${{ github.event.number }} > ./build/.metadata/number
           echo ${{ github.event.pull_request.head.sha }} > ./build/.metadata/commit
-          echo $( ls -d ./build/build/* | grep '.apk' ) > ./build/.metadata/apk
-          echo $( ls -d ./build/build/* | grep '.zip' ) > ./build/.metadata/zip
+          echo $( ls ./build/build/ | grep '.apk' ) > ./build/.metadata/apk_filename
+          echo $( ls ./build/build/ | grep '.zip' ) > ./build/.metadata/zip_filename
           echo $(date -u +'%Y-%m-%d_%H-%M' -d"$(stat -c %y ./build/build/total-conversion-build.user.js)") > ./build/.metadata/buildstamp
 
       - uses: actions/upload-artifact@v2
