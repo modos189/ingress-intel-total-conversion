@@ -74,3 +74,4 @@ jobs:
             | [`${{ env.BUILD_APK }}`](https://github.com/) | ${{ env.COMMIT_HASH }} |
             | [`${{ env.BUILD_ZIP }}`](https://github.com/) | ${{ env.COMMIT_HASH }} |
             [Build on website](https://iitc.app/build/artifact/PR${{ env.PR_NUMBER }}/)
+
