@@ -4,7 +4,7 @@ name: Upload PR
 # access to secrets
 on:
   workflow_run:
-    workflows: ["Receive PR"]
+    workflows: ["Build PR"]
     types:
       - completed
 
