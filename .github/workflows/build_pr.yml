@@ -8,10 +8,37 @@ on:
       - '!.github/**'
 
 jobs:
+
+  eslint:
+    name: runner / eslint
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          # Make sure the actual branch is checked out when running on pull requests
+          ref: ${{ github.head_ref }}
+          # This is important to fetch the changes to the previous commit
+          fetch-depth: 0
+
+      - uses: reviewdog/action-eslint@v1
+        with:
+          reporter: github-pr-review
+          level: error
+          fail_on_error: true
+
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          # Make sure the actual branch is checked out when running on pull requests
+          ref: ${{ github.head_ref }}
+          # This is important to fetch the changes to the previous commit
+          fetch-depth: 0
 
       - uses: actions/setup-java@v3
         with:
@@ -29,6 +56,11 @@ jobs:
 
       - name: Download localbuildsettings.py
         run: wget https://iitc.app/deploy/localbuildsettings.py
+
+      - name: Prettify code
+        uses: creyD/prettier_action@v4.2
+        with:
+          only_changed: True
 
       - name: Run build.py
         env:
