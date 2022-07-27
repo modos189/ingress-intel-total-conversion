@@ -9,9 +9,9 @@
 window.plugin.compAPStats = function() {};
 
 window.plugin.compAPStats.setupCallback = function() {
-  // add a new div to the bottom of the sidebar and style it
-  $('#sidebar').append('<div id="available_ap_display"></div>');
-  $('#available_ap_display').css({'color':'#ffce00', 'font-size':'90%', 'padding':'4px 2px'});
+// add a new div to the bottom of the sidebar and style it
+$('#sidebar').append('<div id="available_ap_display"></div>');
+$('#available_ap_display').css({'color':'#ffce00', 'font-size':'90%', 'padding':'4px 2px'});
 
   // do an initial calc for sidebar sizing purposes
   window.plugin.compAPStats.update(false);
@@ -22,7 +22,7 @@ window.plugin.compAPStats.setupCallback = function() {
 
 }
 
-window.plugin.compAPStats.mapDataRefreshEnd = function() {
+window.plugin.compAPStats.mapDataRefreshEnd =function() {
   if (window.plugin.compAPStats.timer) {
     clearTimeout(window.plugin.compAPStats.timer);
     window.plugin.compAPStats.timer = undefined;
@@ -41,8 +41,8 @@ window.plugin.compAPStats.requestFinished = function() {
   }
 }
 
-window.plugin.compAPStats.updateNoPortals = function (hasFinished) {
-  $('#available_ap_display').html('Available AP in this area: '
+window.plugin.compAPStats.updateNoPortals = function (hasFinished ) {
+  $('#available_ap_display').html( 'Available AP in this area: '
     + '<div style="color:red">Zoom closer to get all portals loaded.<div>');
 }
 
@@ -51,7 +51,7 @@ window.plugin.compAPStats.update = function (hasFinished) {
     window.plugin.compAPStats.updateNoPortals(hasFinished);
     return;
   }
-  
+
   var result = window.plugin.compAPStats.compAPStats();
   var loading = hasFinished ? '' : 'Loading...';
 
