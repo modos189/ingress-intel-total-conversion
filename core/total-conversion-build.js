@@ -4,7 +4,6 @@
 // @description    Total conversion for the ingress intel map.
 // @run-at         document-end
 
-
 window.script_info = plugin_info;
 
 // REPLACE ORIG SITE ///////////////////////////////////////////////////
@@ -14,8 +13,8 @@ if (document.documentElement.getAttribute('itemscope') !== null) {
 window.iitcBuildDate = '@build_date@';
 
 // disable vanilla JS
-window.onload = function() {};
-document.body.onload = function() {};
+window.onload = function () {};
+document.body.onload = function () {};
 
 //originally code here parsed the <Script> tags from the page to find the one that defined the PLAYER object
 //however, that's already been executed, so we can just access PLAYER - no messing around needed!
@@ -47,60 +46,70 @@ if (!window.PLAYER || !PLAYER.nickname) {
 // remove complete page. We only wanted the user-data and the page’s
 // security context so we can access the API easily. Setup as much as
 // possible without requiring scripts.
-document.head.innerHTML = ''
-  + '<title>Ingress Intel Map</title>'
-  + '<style>'+'@include_string:style.css@'+'</style>'
-  + '<style>'+'@include_css:external/leaflet.css@'+'</style>'
-  + '<style>'+'@include_css:external/jquery-ui-1.12.1-resizable.css@'+'</style>'
-//note: smartphone.css injection moved into code/smartphone.js
-  + '<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto:100,100italic,300,300italic,400,400italic,500,500italic,700,700italic&subset=latin,cyrillic-ext,greek-ext,greek,vietnamese,latin-ext,cyrillic"/>';
+document.head.innerHTML =
+  '' +
+  '<title>Ingress Intel Map</title>' +
+  '<style>' +
+  '@include_string:style.css@' +
+  '</style>' +
+  '<style>' +
+  '@include_css:external/leaflet.css@' +
+  '</style>' +
+  '<style>' +
+  '@include_css:external/jquery-ui-1.12.1-resizable.css@' +
+  '</style>' +
+  //note: smartphone.css injection moved into code/smartphone.js
+  '<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto:100,100italic,300,300italic,400,400italic,500,500italic,700,700italic&subset=latin,cyrillic-ext,greek-ext,greek,vietnamese,latin-ext,cyrillic"/>';
 
 // remove body element entirely to remove event listeners
 document.body = document.createElement('body');
-document.body.innerHTML = ''
-  + '<div id="map">Loading, please wait</div>'
-  + '<div id="chatcontrols" style="display:none">'
-  + '<a accesskey="0" title="[0]"><span class="toggle"></span></a>'
-  + '<a accesskey="1" title="[1]">all</a>'
-  + '<a accesskey="2" title="[2]" class="active">faction</a>'
-  + '<a accesskey="3" title="[3]">alerts</a>'
-  + '</div>'
-  + '<div id="chat" style="display:none">'
-  + '  <div id="chatfaction"></div>'
-  + '  <div id="chatall"></div>'
-  + '  <div id="chatalerts"></div>'
-  + '</div>'
-  + '<form id="chatinput" style="display:none"><table><tr>'
-  + '  <td><time></time></td>'
-  + '  <td><mark>tell faction:</mark></td>'
-  + '  <td><input id="chattext" type="text" maxlength="256" accesskey="c" title="[c]" /></td>'
-  + '</tr></table></form>'
-  + '<a id="sidebartoggle" accesskey="i" title="Toggle sidebar [i]"><span class="toggle close"></span></a>'
-  + '<div id="scrollwrapper">' // enable scrolling for small screens
-  + '  <div id="sidebar" style="display: none">'
-  + '    <div id="playerstat">t</div>'
-  + '    <div id="gamestat">&nbsp;loading global control stats</div>'
-  + '    <div id="searchwrapper">'
-  + '      <button title="Current location" id="buttongeolocation"><img src="'+'@include_img:images/current-location.png@'+'" alt="Current location"/></button>'
-  + '      <input id="search" placeholder="Search location…" type="search" accesskey="f" title="Search for a place [f]"/>'
-  + '    </div>'
-  + '    <div id="portaldetails"></div>'
-  + '    <input id="redeem" placeholder="Redeem code…" type="text"/>'
-  + '    <div id="toolbox"></div>'
-  + '  </div>'
-  + '</div>'
-  + '<div id="updatestatus"><div id="innerstatus"></div></div>'
+document.body.innerHTML =
+  '' +
+  '<div id="map">Loading, please wait</div>' +
+  '<div id="chatcontrols" style="display:none">' +
+  '<a accesskey="0" title="[0]"><span class="toggle"></span></a>' +
+  '<a accesskey="1" title="[1]">all</a>' +
+  '<a accesskey="2" title="[2]" class="active">faction</a>' +
+  '<a accesskey="3" title="[3]">alerts</a>' +
+  '</div>' +
+  '<div id="chat" style="display:none">' +
+  '  <div id="chatfaction"></div>' +
+  '  <div id="chatall"></div>' +
+  '  <div id="chatalerts"></div>' +
+  '</div>' +
+  '<form id="chatinput" style="display:none"><table><tr>' +
+  '  <td><time></time></td>' +
+  '  <td><mark>tell faction:</mark></td>' +
+  '  <td><input id="chattext" type="text" maxlength="256" accesskey="c" title="[c]" /></td>' +
+  '</tr></table></form>' +
+  '<a id="sidebartoggle" accesskey="i" title="Toggle sidebar [i]"><span class="toggle close"></span></a>' +
+  '<div id="scrollwrapper">' + // enable scrolling for small screens
+  '  <div id="sidebar" style="display: none">' +
+  '    <div id="playerstat">t</div>' +
+  '    <div id="gamestat">&nbsp;loading global control stats</div>' +
+  '    <div id="searchwrapper">' +
+  '      <button title="Current location" id="buttongeolocation"><img src="' +
+  '@include_img:images/current-location.png@' +
+  '" alt="Current location"/></button>' +
+  '      <input id="search" placeholder="Search location…" type="search" accesskey="f" title="Search for a place [f]"/>' +
+  '    </div>' +
+  '    <div id="portaldetails"></div>' +
+  '    <input id="redeem" placeholder="Redeem code…" type="text"/>' +
+  '    <div id="toolbox"></div>' +
+  '  </div>' +
+  '</div>' +
+  '<div id="updatestatus"><div id="innerstatus"></div></div>' +
   // avoid error by stock JS
-  + '<div id="play_button"></div>'
-  + '<div id="header"><div id="nav"></div></div>';
+  '<div id="play_button"></div>' +
+  '<div id="header"><div id="nav"></div></div>';
 
 // CONFIG OPTIONS ////////////////////////////////////////////////////
 window.REFRESH = 30; // refresh view every 30s (base time)
 window.ZOOM_LEVEL_ADJ = 5; // add 5 seconds per zoom level
-window.ON_MOVE_REFRESH = 2.5;  //refresh time to use after a movement event
+window.ON_MOVE_REFRESH = 2.5; //refresh time to use after a movement event
 window.MINIMUM_OVERRIDE_REFRESH = 10; //limit on refresh time since previous refresh, limiting repeated move refresh rate
-window.REFRESH_GAME_SCORE = 15*60; // refresh game score every 15 minutes
-window.MAX_IDLE_TIME = 15*60; // stop updating map after 15min idling
+window.REFRESH_GAME_SCORE = 15 * 60; // refresh game score every 15 minutes
+window.MAX_IDLE_TIME = 15 * 60; // stop updating map after 15min idling
 window.HIDDEN_SCROLLBAR_ASSUMED_WIDTH = 20;
 window.SIDEBAR_WIDTH = 300;
 
@@ -117,10 +126,16 @@ window.FIELD_MU_DISPLAY_POINT_TOLERANCE = 60;
 window.COLOR_SELECTED_PORTAL = '#f0f';
 window.COLORS = ['#FF6600', '#0088FF', '#03DC03']; // none, res, enl
 window.COLORS_LVL = ['#000', '#FECE5A', '#FFA630', '#FF7315', '#E40000', '#FD2992', '#EB26CD', '#C124E0', '#9627F4'];
-window.COLORS_MOD = {VERY_RARE: '#b08cff', RARE: '#73a8ff', COMMON: '#8cffbf'};
+window.COLORS_MOD = { VERY_RARE: '#b08cff', RARE: '#73a8ff', COMMON: '#8cffbf' };
 
-
-window.MOD_TYPE = {RES_SHIELD:'Shield', MULTIHACK:'Multi-hack', FORCE_AMP:'Force Amp', HEATSINK:'Heat Sink', TURRET:'Turret', LINK_AMPLIFIER: 'Link Amp'};
+window.MOD_TYPE = {
+  RES_SHIELD: 'Shield',
+  MULTIHACK: 'Multi-hack',
+  FORCE_AMP: 'Force Amp',
+  HEATSINK: 'Heat Sink',
+  TURRET: 'Turret',
+  LINK_AMPLIFIER: 'Link Amp',
+};
 
 // circles around a selected portal that show from where you can hack
 // it and how far the portal reaches (i.e. how far links may be made
@@ -186,12 +201,12 @@ window.fields = {};
 
 // plugin framework. Plugins may load earlier than iitc, so don’t
 // overwrite data
-if (typeof window.plugin !== 'function') window.plugin = function() {};
+if (typeof window.plugin !== 'function') window.plugin = function () {};
 
 var ulog = (function (module) {
   '@include_raw:external/ulog.min.js@';
   return module;
-}({})).exports;
+})({}).exports;
 
 // prettier-ignore
 '@bundle_code@';
