@@ -8,38 +8,38 @@
 // use own namespace for plugin
 window.plugin.compAPStats = function() {};
 
-window.plugin.compAPStats.setupCallback = function() {
-  // add a new div to the bottom of the sidebar and style it
-  $('#sidebar').append('<div id="available_ap_display"></div>');
-  $('#available_ap_display').css({'color':'#ffce00', 'font-size':'90%', 'padding':'4px 2px'});
+            window.plugin.compAPStats.setupCallback = function() {
+              // add a new div to the bottom of the sidebar and style it
+              $('#sidebar').append('<div id="available_ap_display"></div>');
+              $('#available_ap_display').css({'color':'#ffce00', 'font-size':'90%', 'padding':'4px 2px'});
 
-  // do an initial calc for sidebar sizing purposes
-  window.plugin.compAPStats.update(false);
+              // do an initial calc for sidebar sizing purposes
+              window.plugin.compAPStats.update(false);
 
-  // make the value update when the map data updates
-  window.addHook('mapDataRefreshEnd', window.plugin.compAPStats.mapDataRefreshEnd);
-  window.addHook('requestFinished', window.plugin.compAPStats.requestFinished);
+              // make the value update when the map data updates
+              window.addHook('mapDataRefreshEnd', window.plugin.compAPStats.mapDataRefreshEnd);
+              window.addHook('requestFinished', window.plugin.compAPStats.requestFinished);
 
-}
+            }
 
-window.plugin.compAPStats.mapDataRefreshEnd = function() {
-  if (window.plugin.compAPStats.timer) {
-    clearTimeout(window.plugin.compAPStats.timer);
-    window.plugin.compAPStats.timer = undefined;
-  }
+            window.plugin.compAPStats.mapDataRefreshEnd = function() {
+              if (window.plugin.compAPStats.timer) {
+                clearTimeout(window.plugin.compAPStats.timer);
+                window.plugin.compAPStats.timer = undefined;
+              }
 
-  window.plugin.compAPStats.update(true);
-}
+              window.plugin.compAPStats.update(true);
+            }
 
-window.plugin.compAPStats.requestFinished = function() {
-  // process on a short delay, so if multiple requests finish in a short time we only calculate once
-  if (window.plugin.compAPStats.timer === undefined) {
-    window.plugin.compAPStats.timer = setTimeout( function() {
-      window.plugin.compAPStats.timer = undefined;
-      window.plugin.compAPStats.update(false);
-    }, 0.75*1000);
-  }
-}
+            window.plugin.compAPStats.requestFinished = function() {
+              // process on a short delay, so if multiple requests finish in a short time we only calculate once
+              if (window.plugin.compAPStats.timer === undefined) {
+                window.plugin.compAPStats.timer = setTimeout( function() {
+                  window.plugin.compAPStats.timer = undefined;
+                  window.plugin.compAPStats.update(false);
+                }, 0.75*1000);
+              }
+            }
 
 window.plugin.compAPStats.updateNoPortals = function (hasFinished) {
   $('#available_ap_display').html('Available AP in this area: '
@@ -51,7 +51,7 @@ window.plugin.compAPStats.update = function (hasFinished) {
     window.plugin.compAPStats.updateNoPortals(hasFinished);
     return;
   }
-  
+
   var result = window.plugin.compAPStats.compAPStats();
   var loading = hasFinished ? '' : 'Loading...';
 

@@ -193,6 +193,7 @@ var ulog = (function (module) {
   return module;
 }({})).exports;
 
+// prettier-ignore
 '@bundle_code@';
 
 /* exported ulog, portalsFactionLayers, linksFactionLayers, fieldsFactionLayers -- eslint */
