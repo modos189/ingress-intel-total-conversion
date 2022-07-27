@@ -15,6 +15,7 @@
     "build": "npm run build:local",
     "build:local": "./build.py local",
     "build:mobile": "./build.py mobile",
-    "fileserver": "./web_server_local.py local"
+    "fileserver": "./web_server_local.py local",
+    "eslint": "eslint"
   }
 }
