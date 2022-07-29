@@ -11,9 +11,12 @@ on:
 jobs:
   upload:
     runs-on: ubuntu-latest
+    env:
+      WEBSITE_REPO: ${{ secrets.WEBSITE_REPO }}
     if: >
       ${{ github.event.workflow_run.event == 'pull_request' &&
-      github.event.workflow_run.conclusion == 'success' }}
+      github.event.workflow_run.conclusion == 'success' &&
+      env.WEBSITE_REPO != '' }}
     steps:
       - name: 'Download artifact'
         uses: actions/github-script@v6
@@ -51,7 +54,6 @@ jobs:
         env:
           WEBSITE_REPO: ${{ secrets.WEBSITE_REPO }}
           API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
-        if: ${{ env.WEBSITE_REPO != '' }}
         uses: dmnemec/copy_file_to_another_repo_action@main
         with:
           source_file: "./build/."
@@ -63,7 +65,6 @@ jobs:
           commit_message: '🤖 New IITC test build from https://github.com/${{ github.repository }}/commit/${{ github.sha }}'
 
       - name: Comment with build url
-        if: ${{ env.WEBSITE_REPO != '' }}
         env:
           WEBSITE_REPO: ${{ secrets.WEBSITE_REPO }}
         uses: marocchino/sticky-pull-request-comment@v2
