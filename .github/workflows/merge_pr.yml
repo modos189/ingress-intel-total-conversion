@@ -1,0 +1,32 @@
+name: After PR merging
+
+on:
+  pull_request:
+    types:
+      - closed
+
+jobs:
+  if_merged:
+    env:
+      WEBSITE_REPO: ${{ secrets.WEBSITE_REPO }}
+    if: ${{ github.event.pull_request.merged == true && env.WEBSITE_REPO != '' }}
+    runs-on: ubuntu-latest
+    steps:
+
+      - uses: actions/checkout@v3
+        with:
+          repository: ${{ secrets.WEBSITE_REPO }}
+          ref: 'master'
+          token:  ${{ secrets.API_TOKEN_GITHUB }}
+
+      - name: Setup git config
+        run: |
+          git config user.name "userz"
+          git config user.email "<>"
+
+      - name: Delete old build artifacts
+        run: |
+          git rm -r static/build/artifact/PR${{ github.event.number }}/
+          git commit -m "🤖 PR #${{ github.event.number }} merged, deleting old build artifacts"
+
+      - run: git push origin master
