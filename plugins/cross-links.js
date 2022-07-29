@@ -4,14 +4,12 @@
 // @version        1.3.1
 // @description    Checks for existing links that cross planned links. Requires draw-tools plugin.
 
-
-window.plugin.crossLinks = function () { };
+window.plugin.crossLinks = function () {};
 
 /**
  * greatCircleArcIntersect
  */
 window.plugin.crossLinks.greatCircleArcIntersect = function (a0, a1, b0, b1) {
-
   // 0) quick checks
   // zero length line
   if (a0.equals(a1)) return false;
@@ -50,8 +48,8 @@ window.plugin.crossLinks.greatCircleArcIntersect = function (a0, a1, b0, b1) {
   // c) special case when both planes are equal
   // = both lines are on the same greatarc. test if they overlap
   var len2 = p[0] * p[0] + p[1] * p[1] + p[2] * p[2];
-  if (len2 < 1e-30) /* === 0 */ {
-    // b0 inside a0-a1 ?
+  if (len2 < 1e-30) {
+    /* === 0 */ // b0 inside a0-a1 ?
     var s1 = dot(cb0, da0);
     var d1 = dot(cb0, da1);
     if ((s1 < 0 && d1 > 0) || (s1 > 0 && d1 < 0)) return true;
@@ -68,7 +66,7 @@ window.plugin.crossLinks.greatCircleArcIntersect = function (a0, a1, b0, b1) {
 
   // normalize P
   var n = 1 / Math.sqrt(len2);
-  p[0] *= n, p[1] *= n, p[2] *= n
+  (p[0] *= n), (p[1] *= n), (p[2] *= n);
 
   // d) at this point we have two possible collision points
   //    p or -p  (in 3D space)
@@ -99,56 +97,75 @@ function toCartesian(lat, lng) {
   lat *= d2r;
   lng *= d2r;
   var o = Math.cos(lat);
-  return [o * Math.cos(lng), o * Math.sin(lng), Math.sin(lat)]
+  return [o * Math.cos(lng), o * Math.sin(lng), Math.sin(lat)];
 }
 
 function cross(t, n) {
-  return [t[1] * n[2] - t[2] * n[1], t[2] * n[0] - t[0] * n[2], t[0] * n[1] - t[1] * n[0]]
+  return [
+    t[1] * n[2] - t[2] * n[1],
+    t[2] * n[0] - t[0] * n[2],
+    t[0] * n[1] - t[1] * n[0],
+  ];
 }
 
 function dot(t, n) {
-  return t[0] * n[0] + t[1] * n[1] + t[2] * n[2]
+  return t[0] * n[0] + t[1] * n[1] + t[2] * n[2];
 }
 
-
 window.plugin.crossLinks.testPolyLine = function (polyline, link, closed) {
-
   var a = link.getLatLngs();
   var b = polyline.getLatLngs();
 
   for (var i = 0; i < b.length - 1; ++i) {
-    if (window.plugin.crossLinks.greatCircleArcIntersect(a[0], a[1], b[i], b[i + 1])) return true;
+    if (
+      window.plugin.crossLinks.greatCircleArcIntersect(
+        a[0],
+        a[1],
+        b[i],
+        b[i + 1]
+      )
+    )
+      return true;
   }
 
   if (closed) {
-    if (window.plugin.crossLinks.greatCircleArcIntersect(a[0], a[1], b[b.length - 1], b[0])) return true;
+    if (
+      window.plugin.crossLinks.greatCircleArcIntersect(
+        a[0],
+        a[1],
+        b[b.length - 1],
+        b[0]
+      )
+    )
+      return true;
   }
 
   return false;
-}
+};
 
 window.plugin.crossLinks.onLinkAdded = function (data) {
   if (window.plugin.crossLinks.disabled) return;
 
   plugin.crossLinks.testLink(data.link);
-}
+};
 
 window.plugin.crossLinks.checkAllLinks = function () {
   if (window.plugin.crossLinks.disabled) return;
 
-  console.debug('Cross-Links: checking all links');
+  console.debug("Cross-Links: checking all links");
   plugin.crossLinks.linkLayer.clearLayers();
   plugin.crossLinks.linkLayerGuids = {};
 
   $.each(window.links, function (guid, link) {
     plugin.crossLinks.testLink(link);
   });
-}
+};
 
 window.plugin.crossLinks.testLink = function (link) {
   if (plugin.crossLinks.linkLayerGuids[link.options.guid]) return;
 
-  for (var i in plugin.drawTools.drawnItems._layers) { // leaflet don't support breaking out of the loop
+  for (var i in plugin.drawTools.drawnItems._layers) {
+    // leaflet don't support breaking out of the loop
     var layer = plugin.drawTools.drawnItems._layers[i];
     if (layer instanceof L.GeodesicPolygon) {
       if (plugin.crossLinks.testPolyLine(layer, link, true)) {
@@ -162,24 +179,22 @@ window.plugin.crossLinks.testLink = function (link) {
       }
     }
   }
-}
-
+};
 
 window.plugin.crossLinks.showLink = function (link) {
-
   var poly = L.geodesicPolyline(link.getLatLngs(), {
-    color: '#d22',
+    color: "#d22",
     opacity: 0.7,
     weight: 5,
     interactive: false,
-    dashArray: '8,8',
+    dashArray: "8,8",
 
-    guid: link.options.guid
+    guid: link.options.guid,
   });
 
   poly.addTo(plugin.crossLinks.linkLayer);
   plugin.crossLinks.linkLayerGuids[link.options.guid] = poly;
-}
+};
 
 window.plugin.crossLinks.onMapDataRefreshEnd = function () {
   if (window.plugin.crossLinks.disabled) return;
@@ -187,7 +202,7 @@ window.plugin.crossLinks.onMapDataRefreshEnd = function () {
   window.plugin.crossLinks.linkLayer.bringToFront();
 
   window.plugin.crossLinks.testForDeletedLinks();
-}
+};
 
 window.plugin.crossLinks.testAllLinksAgainstLayer = function (layer) {
   if (window.plugin.crossLinks.disabled) return;
@@ -205,31 +220,34 @@ window.plugin.crossLinks.testAllLinksAgainstLayer = function (layer) {
       }
     }
   });
-}
+};
 
 window.plugin.crossLinks.testForDeletedLinks = function () {
   window.plugin.crossLinks.linkLayer.eachLayer(function (layer) {
     var guid = layer.options.guid;
     if (!window.links[guid]) {
-      console.log('link removed');
+      console.log("link removed");
       plugin.crossLinks.linkLayer.removeLayer(layer);
       delete plugin.crossLinks.linkLayerGuids[guid];
     }
   });
-}
+};
 
 window.plugin.crossLinks.createLayer = function () {
   window.plugin.crossLinks.linkLayer = new L.FeatureGroup();
   window.plugin.crossLinks.linkLayerGuids = {};
-  window.layerChooser.addOverlay(window.plugin.crossLinks.linkLayer, 'Cross Links');
+  window.layerChooser.addOverlay(
+    window.plugin.crossLinks.linkLayer,
+    "Cross Links"
+  );
 
-  map.on('layeradd', function (obj) {
+  map.on("layeradd", function (obj) {
     if (obj.layer === window.plugin.crossLinks.linkLayer) {
       delete window.plugin.crossLinks.disabled;
       window.plugin.crossLinks.checkAllLinks();
     }
   });
-  map.on('layerremove', function (obj) {
+  map.on("layerremove", function (obj) {
     if (obj.layer === window.plugin.crossLinks.linkLayer) {
       window.plugin.crossLinks.disabled = true;
       window.plugin.crossLinks.linkLayer.clearLayers();
@@ -241,19 +259,19 @@ window.plugin.crossLinks.createLayer = function () {
   if (!map.hasLayer(window.plugin.crossLinks.linkLayer)) {
     window.plugin.crossLinks.disabled = true;
   }
-}
+};
 
 var setup = function () {
   if (window.plugin.drawTools === undefined) {
-    alert('\'Cross-Links\' requires \'draw-tools\'');
+    alert("'Cross-Links' requires 'draw-tools'");
     return;
   }
 
   window.plugin.crossLinks.createLayer();
 
   // events
-  window.addHook('pluginDrawTools', function (e) {
-    if (e.event === 'layerCreated') {
+  window.addHook("pluginDrawTools", function (e) {
+    if (e.event === "layerCreated") {
       // we can just test the new layer in this case
       window.plugin.crossLinks.testAllLinksAgainstLayer(e.layer);
     } else {
@@ -262,7 +280,9 @@ var setup = function () {
     }
   });
 
-  window.addHook('linkAdded', window.plugin.crossLinks.onLinkAdded);
-  window.addHook('mapDataRefreshEnd', window.plugin.crossLinks.onMapDataRefreshEnd);
-
-}
+  window.addHook("linkAdded", window.plugin.crossLinks.onLinkAdded);
+  window.addHook(
+    "mapDataRefreshEnd",
+    window.plugin.crossLinks.onMapDataRefreshEnd
+  );
+};
