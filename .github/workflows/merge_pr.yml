@@ -7,36 +7,14 @@ on:
 
 jobs:
   if_merged:
-    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
-
-      - uses: actions/checkout@v3
-        env:
-          WEBSITE_REPO: ${{ secrets.WEBSITE_REPO }}
-        if: ${{ env.WEBSITE_REPO != '' }}
-        with:
-          repository: ${{ secrets.WEBSITE_REPO }}
-          ref: 'master'
-          token:  ${{ secrets.API_TOKEN_GITHUB }}
-
-      - name: Setup git config
+      - name: Send build artifacts to website
         env:
           WEBSITE_REPO: ${{ secrets.WEBSITE_REPO }}
         if: ${{ env.WEBSITE_REPO != '' }}
         run: |
-          git config user.name "userz"
-          git config user.email "<>"
-
-      - name: Delete old build artifacts
-        env:
-          WEBSITE_REPO: ${{ secrets.WEBSITE_REPO }}
-        if: ${{ env.WEBSITE_REPO != '' }}
-        run: |
-          git rm -r static/build/artifact/PR${{ github.event.number }}/
-          git commit -m "🤖 PR №${{ github.event.number }} merged, deleting old build artifacts"
-
-      - run: git push origin master
-        env:
-          WEBSITE_REPO: ${{ secrets.WEBSITE_REPO }}
-        if: ${{ env.WEBSITE_REPO != '' }}
+          curl -X POST https://api.github.com/repos/${{ secrets.WEBSITE_REPO }}/dispatches \
+          -H 'Accept: application/vnd.github.everest-preview+json' \
+          -u ${{ secrets.API_TOKEN_GITHUB }} \
+          --data '{"event_type": "delete_iitc_pr_build", "client_payload": { "repo": {"pr_number": "${{ github.event.number }}" }}'
