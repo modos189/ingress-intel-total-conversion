@@ -17,7 +17,6 @@ from pathlib import Path
 
 import settings
 
-
 def parse_user_script(filename):
     data = {}
     with filename.open('r', encoding='utf-8-sig') as script:
