@@ -27,6 +27,8 @@ Parts imported from other projects remain under their respective licenses:
 - [**Leaflet.Canvas-Markers**](https://github.com/IITC-CE/Leaflet.Canvas-Markers) © _Evgeniy Voynov_: : [[MIT](https://github.com/IITC-CE/Leaflet.Canvas-Markers/blob/master/LICENSE)]
   (forked from https://github.com/Spaction/Leaflet.Canvas-Markers)
 
+
+
 ### Other:
 - [**autolink-js**](https://github.com/bryanwoods/autolink-js) © [_Bryan Woods_](http://bryanwoods4e.com/): [[MIT](https://github.com/bryanwoods/autolink-js/blob/master/LICENSE)]
 - [**delaunay.js**](https://github.com/ironwallaby/delaunay) © [_Jay LaPorte_](http://ironwallaby.github.io/): [[CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/)]
