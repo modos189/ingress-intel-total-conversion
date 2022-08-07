@@ -23,7 +23,6 @@ window.plugin.grayGMaps.addLayer = function() {
       {featureType:"water",elementType:"labels",stylers:[{visibility:"off"}]}
     ]
   };
-
   var grayGMaps = L.gridLayer.googleMutant(grayGMapsOptions);
 
   layerChooser.addBaseLayer(grayGMaps, "Google Gray");
