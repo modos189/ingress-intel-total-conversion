@@ -47,7 +47,6 @@ public class IITC_WebViewPopup extends WebView {
             public void onCloseWindow(WebView view) {
                 Log.d("close popup window");
                 mDialog.dismiss();
-                view.destroy();
             }
         });
         setWebViewClient(new WebViewClient() {
@@ -106,6 +105,12 @@ public class IITC_WebViewPopup extends WebView {
         mDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
+                view.destroy();
+            }
+        });
+        mDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
                 view.destroy();
             }
         });
