@@ -72,7 +72,11 @@ public class IITC_WebViewPopup extends WebView {
                     Log.d("popup: Google login");
                     return false;
                 }
-                Log.d("popup: no login link, start external app to load url: " + url);
+                if (mIitc.isInternalHostname(uriHost)) {
+                    Log.d("popup: internal host");
+                    return false;
+                }
+                Log.d("popup: no login link, nor internal host, start external app to load url: " + url);
 
                 Log.d("close popup");
                 mDialog.dismiss();
