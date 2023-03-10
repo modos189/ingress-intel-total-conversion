@@ -224,7 +224,6 @@ public class IITC_WebChromeClient extends WebChromeClient {
             return false;
 
         IITC_WebViewPopup newWebView = new IITC_WebViewPopup(mIitc);
-        //view.addView(newWebView);
         WebView.WebViewTransport transport = (WebView.WebViewTransport) resultMsg.obj;
         transport.setWebView(newWebView);
         resultMsg.sendToTarget();

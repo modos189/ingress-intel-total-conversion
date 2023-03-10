@@ -34,8 +34,6 @@ public class IITC_WebViewPopup extends WebView {
         mIitc = (IITC_Mobile) c;
         mSettings = getSettings();
         mSettings.setJavaScriptEnabled(true);
-        //mSettings.setSavePassword(true);
-        //mSettings.setSaveFormData(true);
         setVerticalScrollBarEnabled(false);
         setHorizontalScrollBarEnabled(false);
 
@@ -50,6 +48,7 @@ public class IITC_WebViewPopup extends WebView {
             }
         });
         setWebViewClient(new WebViewClient() {
+            // duplicate code from IITC_WebViewClient
             @Override
             public boolean shouldOverrideUrlLoading(final WebView view, final String url) {
                 final Uri uri = Uri.parse(url);
@@ -64,22 +63,22 @@ public class IITC_WebViewPopup extends WebView {
                 if (uriHost.endsWith("facebook.com")
                         && (uriPath.contains("oauth") || uriPath.equals("/login.php") || uriPath.equals("/checkpoint/"))) {
                     Log.d("popup: Facebook login");
+                    openDialogPopup();
                     return false;
                 }
                 if (uriHost.startsWith("accounts.google.") ||
                          uriHost.startsWith("appengine.google.") ||
                          uriHost.startsWith("accounts.youtube.")) {
                     Log.d("popup: Google login");
+                    openDialogPopup();
                     return false;
                 }
                 if (mIitc.isInternalHostname(uriHost)) {
                     Log.d("popup: internal host");
+                    openDialogPopup();
                     return false;
                 }
                 Log.d("popup: no login link, nor internal host, start external app to load url: " + url);
-
-                Log.d("close popup");
-                mDialog.dismiss();
 
                 final Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                 // make new activity independent from iitcm
@@ -118,8 +117,9 @@ public class IITC_WebViewPopup extends WebView {
                 view.destroy();
             }
         });
+    }
 
-        Log.d("open popup");
+    private void openDialogPopup() {
         mDialog.show();
         mDialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
     }
@@ -146,7 +146,7 @@ public class IITC_WebViewPopup extends WebView {
     public void setUserAgent() {
         final String ua = mSharedPrefs.getBoolean("pref_fake_user_agent", false) ?
                 mDesktopUserAgent : mMobileUserAgent;
-        Log.d("setting user agent to: " + ua);
+        Log.d("setting popup user agent to: " + ua);
         mSettings.setUserAgentString(ua);
     }
 }
