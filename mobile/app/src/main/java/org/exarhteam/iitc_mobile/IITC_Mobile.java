@@ -568,18 +568,6 @@ public class IITC_Mobile extends AppCompatActivity
     // we want a self defined behavior for the back button
     @Override
     public void onBackPressed() {
-        // dispatch to popup if open
-        if (mIitcWebView.getChildCount() > 0) {
-            WebView view = (WebView) mIitcWebView.getChildAt(0);
-            if (view.canGoBack())
-                view.goBack();
-            else {
-                Log.d("Close Popup");
-                mIitcWebView.removeView(view);
-            }
-            return;
-        }
-
         // exit fullscreen mode if it is enabled and action bar is disabled or the back stack is empty
         if (mIitcWebView.isInFullscreen() && mBackStack.isEmpty()) {
             mIitcWebView.toggleFullscreen();
