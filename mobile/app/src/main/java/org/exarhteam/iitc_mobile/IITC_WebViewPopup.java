@@ -20,7 +20,6 @@ import android.webkit.WebViewClient;
 public class IITC_WebViewPopup extends WebView {
     private WebSettings mSettings;
     private IITC_Mobile mIitc;
-    private SharedPreferences mSharedPrefs;
     private final String mDesktopUserAgent = "Mozilla/5.0 (X11; Linux x86_64; rv:17.0)" +
             " Gecko/20130810 Firefox/17.0 Iceweasel/17.0.8";
     private String mMobileUserAgent;
@@ -70,6 +69,16 @@ public class IITC_WebViewPopup extends WebView {
                          uriHost.startsWith("appengine.google.") ||
                          uriHost.startsWith("accounts.youtube.")) {
                     Log.d("popup: Google login");
+                    // Fake user agent for kitkat
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+                        mSettings.setUserAgentString(mDesktopUserAgent);
+                    } else {
+                        final String original_ua = mSettings.getUserAgentString();
+                        // remove ";wv " marker as Google blocks WebViews from using OAuth
+                        // https://developer.chrome.com/multidevice/user-agent#webview_user_agent
+                        mMobileUserAgent = original_ua.replace("; wv", "");
+                        mSettings.setUserAgentString(mMobileUserAgent);
+                    }
                     openDialogPopup();
                     return false;
                 }
@@ -88,19 +97,6 @@ public class IITC_WebViewPopup extends WebView {
                 return true;
             }
         });
-
-        mSharedPrefs = PreferenceManager.getDefaultSharedPreferences(mIitc);
-
-        // Hack to work Google login page in old browser
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP &&
-                !mSharedPrefs.getBoolean("pref_fake_user_agent", false))
-            mSharedPrefs.edit().putBoolean("pref_fake_user_agent", true).apply();
-
-        final String original_ua = mSettings.getUserAgentString();
-        // remove ";wv " marker as Google blocks WebViews from using OAuth
-        // https://developer.chrome.com/multidevice/user-agent#webview_user_agent
-        mMobileUserAgent = original_ua.replace("; wv", "");
-        setUserAgent();
 
         mDialog = new Dialog(mIitc);
         mDialog.setContentView(this);
@@ -141,12 +137,5 @@ public class IITC_WebViewPopup extends WebView {
         super(context, attrs, defStyle);
 
         iitc_init(context);
-    }
-
-    public void setUserAgent() {
-        final String ua = mSharedPrefs.getBoolean("pref_fake_user_agent", false) ?
-                mDesktopUserAgent : mMobileUserAgent;
-        Log.d("setting popup user agent to: " + ua);
-        mSettings.setUserAgentString(ua);
     }
 }
