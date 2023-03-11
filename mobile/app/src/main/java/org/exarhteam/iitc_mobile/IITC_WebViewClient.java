@@ -115,6 +115,9 @@ public class IITC_WebViewClient extends WebViewClient {
                 "});})();";
 
         view.loadJS(js);
+
+        final String fb_popup = "const btn = document.querySelectorAll('a.button_link')[1]; if (btn) btn.target='_blank';";
+        view.loadJS(fb_popup);
     }
 
     @Override

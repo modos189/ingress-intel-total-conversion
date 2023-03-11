@@ -36,6 +36,11 @@ public class IITC_WebViewPopup extends WebView {
         setVerticalScrollBarEnabled(false);
         setHorizontalScrollBarEnabled(false);
 
+        mSettings.setDomStorageEnabled(true);
+        mSettings.setAllowFileAccess(true);
+        mSettings.setGeolocationEnabled(true);
+
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
             setWebContentsDebuggingEnabled(true);
 
@@ -50,6 +55,7 @@ public class IITC_WebViewPopup extends WebView {
             // duplicate code from IITC_WebViewClient
             @Override
             public boolean shouldOverrideUrlLoading(final WebView view, final String url) {
+                Log.d(url);
                 final Uri uri = Uri.parse(url);
                 final String uriHost = uri.getHost();
                 final String uriPath = uri.getPath();
@@ -62,6 +68,8 @@ public class IITC_WebViewPopup extends WebView {
                 if (uriHost.endsWith("facebook.com")
                         && (uriPath.contains("oauth") || uriPath.equals("/login.php") || uriPath.equals("/checkpoint/"))) {
                     Log.d("popup: Facebook login");
+                    // Fake user agent for Facebook
+                    mSettings.setUserAgentString(mDesktopUserAgent);
                     openDialogPopup();
                     return false;
                 }
