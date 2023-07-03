@@ -61,7 +61,7 @@ public class IITC_WebView extends WebView {
         mSettings.setAppCachePath(getContext().getCacheDir().getAbsolutePath());
 
         setSupportPopup(mSharedPrefs.getBoolean("pref_popup", false));
-        setWebViewZoom(Integer.parseInt(mSharedPrefs.getString("pref_webview_zoom", "-1")));
+        setWebViewZoom(mSharedPrefs.getInt("pref_webview_zoom", -1));
 
         // enable mixed content (http on https...needed for some map tiles) mode
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
