@@ -447,7 +447,7 @@ window.chat.renderText = function (text) {
 };
 
 // Override portal names that are used over and over, such as 'US Post Office'
-window.chat.getChatPortalName = function(markup) {
+window.chat.getChatPortalName = function (markup) {
   var name = markup.name;
   if (name === 'US Post Office') {
     var address = markup.address.split(',');
@@ -515,19 +515,19 @@ window.chat.renderMarkup = function (markup) {
 
   markup.forEach(function (ent, ind) {
     switch (ent[0]) {
-    case 'SENDER':
-    case 'SECURE':
-      // skip as already handled
-      break;
+      case 'SENDER':
+      case 'SECURE':
+        // skip as already handled
+        break;
 
-    case 'PLAYER': // automatically generated messages
-      if (ind > 0) msg += chat.renderMarkupEntity(ent); // don’t repeat nick directly
-      break;
+      case 'PLAYER': // automatically generated messages
+        if (ind > 0) msg += chat.renderMarkupEntity(ent); // don’t repeat nick directly
+        break;
 
-    default:
-      // add other enitities whatever the type
-      msg += chat.renderMarkupEntity(ent);
-      break;
+      default:
+        // add other enitities whatever the type
+        msg += chat.renderMarkupEntity(ent);
+        break;
     }
   });
   return msg;
@@ -563,19 +563,16 @@ function transformMessage(markup) {
 }
 
 window.chat.renderTimeCell = function (time, classNames) {
-  var ta = unixTimeToHHmm(time);
-  var tb = unixTimeToDateTimeString(time, true);
+  const ta = window.unixTimeToHHmm(time);
+  let tb = window.unixTimeToDateTimeString(time, true);
   // add <small> tags around the milliseconds
-  tb = (tb.slice(0,19)+'<small class="milliseconds">'+tb.slice(19)+'</small>')
-    .replace(/</g,'&lt;')
-    .replace(/>/g,'&gt;')
-    .replace(/"/g,'&quot;');
-  return '<td><time class="' + classNames + '" title="'+tb+'" data-timestamp="'+time+'">'+ta+'</time></td>';
+  tb = (tb.slice(0, 19) + '<small class="milliseconds">' + tb.slice(19) + '</small>').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  return '<td><time class="' + classNames + '" title="' + tb + '" data-timestamp="' + time + '">' + ta + '</time></td>';
 };
 
-window.chat.renderNickCell = function(nick, classNames) {
-  var i = ['<span class="invisep">&lt;</span>', '<span class="invisep">&gt;</span>'];
-  return '<td>'+i[0]+'<mark class="' + classNames + '">'+ nick+'</mark>'+i[1]+'</td>';
+window.chat.renderNickCell = function (nick, classNames) {
+  const i = ['<span class="invisep">&lt;</span>', '<span class="invisep">&gt;</span>'];
+  return '<td>' + i[0] + '<mark class="' + classNames + '">' + nick + '</mark>' + i[1] + '</td>';
 };
 
 window.chat.renderMsgCell = function(msg, classNames) {
