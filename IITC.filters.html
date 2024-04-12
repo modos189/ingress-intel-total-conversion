@@ -58,7 +58,51 @@
         <div class="container-overview">
         
             
-                <div class="description"><h1>Filters API</h1></div>
+                <div class="description"><h3>Filters API</h3>
+<p>Filters API is a mechanism to hide intel entities using their properties (faction,
+health, timestamp...). It provides two level APIs: a set of named filters that
+apply globally (any entity matching one of the filters will be hidden), and low
+level API to test an entity against a filter for generic purpose.
+This comes with a Leaflet layer system following the old layer system, the filter
+is disabled when the layer is added to the map and is enabled when removed.</p>
+<p>A filter applies to a combinaison of portal/link/field and is described by</p>
+<ul>
+<li>data properties that must (all) match</li>
+<li>or a predicate for complex filter</li>
+</ul>
+<p><code>{ portal: true, link: true, data: { team: 'E' }}</code>
+filters any ENL portal/link</p>
+<p><code>[{ link: true, data: { oGuid: &quot;some guid&quot; }}, { link: true, data: { dGuid: &quot;some guid&quot; }}]</code>
+filters any links on portal with guid &quot;some guid&quot;</p>
+<p><code>{ field: true, pred: function (f) { return f.options.timestamp &lt; Date.parse('2021-10-31'); } }</code>
+filters any fields made before Halloween 2021</p>
+<p>Data properties can be specified as value, or as a complex expression (required
+for array data properties). A complex expression is a 2-array, first element is
+an operator, second is the argument of the operator for the property.
+The operators are:</p>
+<ul>
+<li><code>['eq', value]</code> : this is equivalent to type directly <code>value</code></li>
+<li><code>['not', ]</code></li>
+<li><code>['or', [exp1, exp2,...]]</code>: the expression matches if one of the exp1.. matches</li>
+<li><code>['and', [exp1, exp2...]]</code>: matches if all exp1 matches (useful for array
+properties)</li>
+<li><code>['some', exp]</code>: when the property is an array, matches if one of the element
+matches <code>exp</code></li>
+<li><code>['every', exp]</code>: all elements must match <code>exp</code></li>
+<li><code>['&lt;', number]</code>: for number comparison (and &lt;= &gt; &gt;=)</li>
+</ul>
+<p>Examples:</p>
+<p><code>{ portal: true, data:  ['not', { history: { scoutControlled: false }, ornaments:   ['some', 'sc5_p'] }] }</code>
+filters all portals but the one never scout controlled that have a scout
+volatile ornament</p>
+<p><code>{ portal: true, data: ['not', { resonators: ['every', { owner: 'some agent' } ] } ] }</code>
+filters all portals that have resonators not owned from 'some agent'
+(note: that would need to load portal details)</p>
+<p><code>{ portal: true, data: { level: ['or', [1,4,5]], health: ['&gt;', 85] } }</code>
+filters all portals with level 1,4 or 5 and health over 85</p>
+<p><code>{ portal: true, link: true, field: true, options: { timestamp: ['&lt;',   Date.now() - 3600000] } }</code>
+filters all entities with no change since 1 hour (from the creation of
+the filter)</p></div>
             
 
             
@@ -145,7 +189,7 @@
     
     <div class="container-source members">
         <code><a href="code_filters.js.html">code/filters.js</a></code>,
-        <code><a href="code_filters.js.html#line13">line 13</a></code>
+        <code><a href="code_filters.js.html#line67">line 67</a></code>
     </div>
     
 </h4>
@@ -229,7 +273,7 @@
             
             <div class="container-source members">
                 <code><a href="code_filters.js.html">code/filters.js</a></code>,
-                <code><a href="code_filters.js.html#line227">line 227</a></code>
+                <code><a href="code_filters.js.html#line281">line 281</a></code>
             </div>
             
         </h4>
@@ -319,7 +363,7 @@ Entities that match any of the active filters are removed from the map; others a
             
             <div class="container-source members">
                 <code><a href="code_filters.js.html">code/filters.js</a></code>,
-                <code><a href="code_filters.js.html#line219">line 219</a></code>
+                <code><a href="code_filters.js.html#line273">line 273</a></code>
             </div>
             
         </h4>
@@ -479,7 +523,7 @@ Entities that match any of the active filters are removed from the map; others a
             
             <div class="container-source members">
                 <code><a href="code_filters.js.html">code/filters.js</a></code>,
-                <code><a href="code_filters.js.html#line209">line 209</a></code>
+                <code><a href="code_filters.js.html#line263">line 263</a></code>
             </div>
             
         </h4>
@@ -639,7 +683,7 @@ Entities that match any of the active filters are removed from the map; others a
             
             <div class="container-source members">
                 <code><a href="code_filters.js.html">code/filters.js</a></code>,
-                <code><a href="code_filters.js.html#line199">line 199</a></code>
+                <code><a href="code_filters.js.html#line253">line 253</a></code>
             </div>
             
         </h4>
@@ -799,7 +843,7 @@ Entities that match any of the active filters are removed from the map; others a
             
             <div class="container-source members">
                 <code><a href="code_filters.js.html">code/filters.js</a></code>,
-                <code><a href="code_filters.js.html#line50">line 50</a></code>
+                <code><a href="code_filters.js.html#line104">line 104</a></code>
             </div>
             
         </h4>
@@ -959,7 +1003,7 @@ Entities that match any of the active filters are removed from the map; others a
             
             <div class="container-source members">
                 <code><a href="code_filters.js.html">code/filters.js</a></code>,
-                <code><a href="code_filters.js.html#line60">line 60</a></code>
+                <code><a href="code_filters.js.html#line114">line 114</a></code>
             </div>
             
         </h4>
@@ -1119,7 +1163,7 @@ Entities that match any of the active filters are removed from the map; others a
             
             <div class="container-source members">
                 <code><a href="code_filters.js.html">code/filters.js</a></code>,
-                <code><a href="code_filters.js.html#line40">line 40</a></code>
+                <code><a href="code_filters.js.html#line94">line 94</a></code>
             </div>
             
         </h4>
@@ -1284,7 +1328,7 @@ Entities that match any of the active filters are removed from the map; others a
             
             <div class="container-source members">
                 <code><a href="code_filters.js.html">code/filters.js</a></code>,
-                <code><a href="code_filters.js.html#line167">line 167</a></code>
+                <code><a href="code_filters.js.html#line221">line 221</a></code>
             </div>
             
         </h4>
@@ -1499,7 +1543,7 @@ Entities that match any of the active filters are removed from the map; others a
     
     <div class="container-source members">
         <code><a href="code_filters.js.html">code/filters.js</a></code>,
-        <code><a href="code_filters.js.html#line22">line 22</a></code>
+        <code><a href="code_filters.js.html#line76">line 76</a></code>
     </div>
     
 </h4>
@@ -1788,7 +1832,7 @@ Entities that match any of the active filters are removed from the map; others a
             
             <div class="container-source members">
                 <code><a href="code_filters.js.html">code/filters.js</a></code>,
-                <code><a href="code_filters.js.html#line15">line 15</a></code>
+                <code><a href="code_filters.js.html#line69">line 69</a></code>
             </div>
             
         </h4>
