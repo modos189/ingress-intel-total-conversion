@@ -155,7 +155,7 @@ window.artifact.processResult = function (portals) {
     if (!artifact.portalInfo[guid]) artifact.portalInfo[guid] = {};
 
     // store the decoded data - needed for lat/lng for layer markers
-    artifact.portalInfo[guid]._data = data;
+artifact.portalInfo[guid]._data = data;
 
     for(var type in data.artifactBrief.target) {
       if (!artifact.artifactTypes[type]) artifact.artifactTypes[type] = {};
@@ -175,11 +175,9 @@ window.artifact.processResult = function (portals) {
 
 
     // let's pre-generate the entities needed to render the map - array of [guid, timestamp, ent_array]
-    artifact.entities.push ( [guid, data.timestamp, ent] );
+artifact.entities.push ( [guid, data.timestamp, ent] );
 
-  }
-
-}
+  }}
 
 /**
  * Returns the types of artifacts currently known.
@@ -282,7 +280,7 @@ window.artifact.updateLayer = function() {
 
         artifact._layer.addLayer(marker);
 
-      } else if (data[type].fragments) {
+      } else if (   data[type].fragments) {
         // fragment(s) at portal
 
         var iconUrl = '//commondatastorage.googleapis.com/ingress.com/img/map_icons/marker_images/'+type+'_shard.png'
