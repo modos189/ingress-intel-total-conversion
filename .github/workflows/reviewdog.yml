@@ -11,6 +11,10 @@ jobs:
   eslint:
     name: runner / eslint
     runs-on: ubuntu-latest
+    permissions:
+      checks: write
+      contents: read
+      pull-requests: read
     steps:
       - uses: actions/checkout@v2
       - uses: reviewdog/action-eslint@v1
