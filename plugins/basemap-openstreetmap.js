@@ -19,7 +19,7 @@ var changelog = [
   {
     version: '0.1.3',
     changes: ['Update OSM tile provider', 'Add CyclOSM tiles', 'Expose config'],
-  },
+  }
 ];
 
 // https://wiki.openstreetmap.org/wiki/Raster_tile_providers
@@ -53,7 +53,7 @@ function setup() {
   // OpenStreetMap tiles - we shouldn't use these by default - https://wiki.openstreetmap.org/wiki/Tile_usage_policy
   // "Heavy use (e.g. distributing an app that uses tiles from openstreetmap.org) is forbidden without prior permission from the System Administrators"
 
-  for (var entry of mapOpenStreetMap.LAYERS) {
+  for ( var entry of mapOpenStreetMap.LAYERS ) {
     var layer = new L.TileLayer(entry.url, entry.options);
     layerChooser.addBaseLayer(layer, entry.name);
   }
