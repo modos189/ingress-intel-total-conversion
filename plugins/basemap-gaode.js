@@ -11,7 +11,7 @@ var changelog = [
   {
     version: '0.1.2',
     changes: ['Version upgrade due to a change in the wrapper: added plugin icon'],
-  },
+  }
 ];
 
 // use own namespace for plugin
@@ -86,12 +86,12 @@ mapGaode.setup = function () {
 
   // new GaodeLayer({ style: 8, type: 'roadnet', opacity: 0.75, lang: 'zh_cn', scl: 2 }), // (512*512 tile, w/o labels)
   // new GaodeLayer({ style: 8, type: 'labels', opacity: 0.75, lang: 'zh_cn', ltype: 4 }) // (feature mask) here: 2: roads, 4: labels)
-  add('Gaode Hybrid', L.layerGroup([
+  add( 'Gaode Hybrid', L.layerGroup([
     Satellite,
     new GaodeLayer({ style: 8, type: 'roadnet', opacity: 0.75 })
   ]));
 };
 
-function setup() {
+function setup () {
   mapGaode.setup();
 }
