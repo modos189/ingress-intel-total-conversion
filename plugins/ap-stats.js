@@ -10,13 +10,13 @@ var changelog = [
   {
     version: '0.4.3',
     changes: ['Version upgrade due to a change in the wrapper: added plugin icon'],
-  },
+  }
 ];
 
 // use own namespace for plugin
-window.plugin.compAPStats = function() {};
+window.plugin.compAPStats = function () {};
 
-window.plugin.compAPStats.setupCallback = function() {
+window.plugin.compAPStats.setupCallback = function () {
   // add a new div to the bottom of the sidebar and style it
   $('#sidebar').append('<div id="available_ap_display"></div>');
   $('#available_ap_display').css({'color':'#ffce00', 'font-size':'90%', 'padding':'4px 2px'});
@@ -26,7 +26,7 @@ window.plugin.compAPStats.setupCallback = function() {
 
   // make the value update when the map data updates
   window.addHook('mapDataRefreshEnd', window.plugin.compAPStats.mapDataRefreshEnd);
-  window.addHook('requestFinished', window.plugin.compAPStats.requestFinished);
+window.addHook('requestFinished', window.plugin.compAPStats.requestFinished)
 
 }
 
