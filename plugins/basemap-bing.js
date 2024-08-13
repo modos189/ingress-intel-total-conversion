@@ -11,7 +11,7 @@ var changelog = [
   {
     version: '0.3.2',
     changes: ['Version upgrade due to a change in the wrapper: added plugin icon'],
-  },
+  }
 ];
 
 // use own namespace for plugin
@@ -40,7 +40,7 @@ mapBing.options = {
 function setup () {
   setupBingLeaflet();
 
-  for (var name in mapBing.sets) {
+  for ( var name in mapBing.sets) {
     var options = L.extend({}, mapBing.options, mapBing.sets[name]);
     layerChooser.addBaseLayer(L.bingLayer(options), 'Bing ' + name);
   }
