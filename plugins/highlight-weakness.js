@@ -11,10 +11,10 @@ var changelog = [
   {
     version: '0.8.1',
     changes: ['Version upgrade due to a change in the wrapper: added plugin icon'],
-  },
+  }
 ];
 
-function weaknessHighlight (data) {
+function weaknessHighlight ( data) {
 
   if (data.portal.options.data.resCount !== undefined
       && data.portal.options.data.health !== undefined
