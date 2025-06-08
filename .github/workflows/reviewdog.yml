@@ -1,11 +1,7 @@
 name: reviewdog
 
-# read-only repo token
-# no access to secrets
 on:
   pull_request:
-    paths-ignore:
-      - '!.github/**'
 
 jobs:
   eslint:
