@@ -86,6 +86,7 @@ public class IITC_Mobile extends AppCompatActivity
     private LocalizationActivityDelegate localizationDelegate = new LocalizationActivityDelegate(this);
     private SharedPreferences mSharedPrefs;
     private IITC_FileManager mFileManager;
+    private StorageAccessFrameworkHelper safHelper;
     private IITC_WebView mIitcWebView;
     private IITC_UserLocation mUserLocation;
     private IITC_NavigationHelper mNavigationHelper;
@@ -269,6 +270,11 @@ public class IITC_Mobile extends AppCompatActivity
 
         // get fullscreen status from settings
         mIitcWebView.updateFullscreenStatus();
+
+        safHelper = new StorageAccessFrameworkHelper(this);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            safHelper.requestAccessToFolder();
+        }
 
         mFileManager = new IITC_FileManager(this);
         mFileManager.setUpdateInterval(Integer.parseInt(mSharedPrefs.getString("pref_update_plugins_interval", "7")));
@@ -914,6 +920,22 @@ public class IITC_Mobile extends AppCompatActivity
     @Override
     protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         final int index = requestCode - RESULT_FIRST_USER;
+
+        if (requestCode == 42 && resultCode == -1) {
+            Uri treeUri = data.getData();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+
+                String text = safHelper.getFirstFileContentInFolder(this, treeUri);
+                if (text == null) {
+                    boolean newFileUri = safHelper.createFile(this, treeUri);
+                    Toast.makeText(this, "File test.txt has been created", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, "Content of test.txt:"+text, Toast.LENGTH_LONG).show();
+                }
+
+                // Do something with the new file URI, such as write data to the file.
+            }
+        }
 
         try {
             final ResponseHandler handler = mResponseHandlers.get(index);
