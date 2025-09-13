@@ -13,9 +13,11 @@ jobs:
     steps:
       - name: Check for Google Play Account secret
         id: secret-check
+        env:
+          GOOGLE_PLAY_ACCOUNT: ${{ secrets.GOOGLE_PLAY_ACCOUNT }}
         shell: bash
         run: |
-          if [ "${{ secrets.GOOGLE_PLAY_ACCOUNT }}" != '' ]; then
+          if [ -n "$GOOGLE_PLAY_ACCOUNT" ]; then
             echo "defined=true" >> $GITHUB_OUTPUT;
           else
             echo "defined=false" >> $GITHUB_OUTPUT;
