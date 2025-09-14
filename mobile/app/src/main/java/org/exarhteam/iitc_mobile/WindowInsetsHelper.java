@@ -162,6 +162,8 @@ public class WindowInsetsHelper {
                 navigationBarHeight
             );
         }
+
+        updateWebViewSafeAreaBottom(activity.getWebView(), navigationBarHeight);
     }
 
     /**
@@ -175,5 +177,18 @@ public class WindowInsetsHelper {
                            activity.getResources().getDisplayMetrics());
         }
         return actionBarSize;
+    }
+
+    /**
+     * Update WebView safe area bottom inset for CSS
+     * Sets --safe-area-inset-bottom to navigation bar height
+     *
+     * @param webView The WebView to update
+     * @param navigationBarHeight Height of the navigation bar in pixels
+     */
+    public static void updateWebViewSafeAreaBottom(org.exarhteam.iitc_mobile.IITC_WebView webView, int navigationBarHeight) {
+        if (webView != null) {
+            webView.setSafeAreaBottom(navigationBarHeight);
+        }
     }
 }

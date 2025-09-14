@@ -225,6 +225,22 @@ public class IITC_WebView extends WebView {
         return mJsInterface;
     }
 
+    /**
+     * Set CSS safe-area-inset-bottom for web content
+     */
+    public void setSafeAreaBottom(int bottomPx) {
+        // Convert pixels to CSS pixels (density-independent)
+        float density = getContext().getResources().getDisplayMetrics().density;
+        int bottomCss = Math.round(bottomPx / density);
+
+        String safeAreaJs = String.format(
+            "document.documentElement.style.setProperty('--safe-area-inset-bottom', '%dpx');",
+            bottomCss
+        );
+
+        loadJS(safeAreaJs);
+    }
+
     public boolean isConnectedToWifi() {
         final ConnectivityManager conMan = (ConnectivityManager) mIitc.getSystemService(Context.CONNECTIVITY_SERVICE);
         final NetworkInfo wifi = conMan.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
