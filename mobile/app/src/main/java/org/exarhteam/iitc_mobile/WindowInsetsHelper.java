@@ -21,14 +21,12 @@ public class WindowInsetsHelper {
 
         ViewCompat.setOnApplyWindowInsetsListener(rootView, (v, windowInsets) -> {
             Insets systemBarsInsets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
-            Insets statusBarsInsets = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars());
-            Insets navigationBarsInsets = windowInsets.getInsets(WindowInsetsCompat.Type.navigationBars());
 
             v.setPadding(
                 systemBarsInsets.left,
-                activity instanceof android.preference.PreferenceActivity ? 0 : statusBarsInsets.top, // PreferenceActivity handles status bar itself
+                activity instanceof android.preference.PreferenceActivity ? 0 : systemBarsInsets.top, // PreferenceActivity handles status bar itself
                 systemBarsInsets.right,
-                navigationBarsInsets.bottom
+                systemBarsInsets.bottom
             );
 
             return windowInsets;
@@ -46,15 +44,17 @@ public class WindowInsetsHelper {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.VANILLA_ICE_CREAM) {
             return;
         }
+        
+        // Remove navigation bar contrast enforcement (removes white background)
+        activity.getWindow().setNavigationBarContrastEnforced(false);
+        
         android.view.View drawerLayout = activity.findViewById(R.id.drawer_layout);
 
         ViewCompat.setOnApplyWindowInsetsListener(drawerLayout, (v, windowInsets) -> {
             Insets systemBarsInsets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
-            Insets statusBarsInsets = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars());
-            Insets navigationBarsInsets = windowInsets.getInsets(WindowInsetsCompat.Type.navigationBars());
 
-            applyMainActivityInsets(activity, statusBarsInsets.top, systemBarsInsets.left,
-                                  systemBarsInsets.right, navigationBarsInsets.bottom);
+            applyMainActivityInsets(activity, systemBarsInsets.top, systemBarsInsets.left,
+                                  systemBarsInsets.right, systemBarsInsets.bottom);
             return windowInsets;
         });
 
@@ -92,7 +92,7 @@ public class WindowInsetsHelper {
      * Apply window insets to all views in the main activity
      */
     private static void applyMainActivityInsets(IITC_Mobile activity, int statusBarHeight,
-                                               int systemBarLeft, int systemBarRight, int navigationBarHeight) {
+                                               int systemBarLeft, int systemBarRight, int systemBarBottom) {
         // Handle toolbar - add top padding for status bar height
         androidx.appcompat.widget.Toolbar toolbar = activity.findViewById(R.id.iitc_toolbar);
         if (toolbar != null) {
@@ -104,14 +104,14 @@ public class WindowInsetsHelper {
             );
         }
 
-        // Handle debug panel - add bottom padding for navigation bar
+        // Handle debug panel - add bottom padding for system bar
         android.view.View debugPanel = activity.findViewById(R.id.viewDebug);
         if (debugPanel != null) {
             debugPanel.setPadding(
                 debugPanel.getPaddingLeft(),
                 debugPanel.getPaddingTop(),
                 debugPanel.getPaddingRight(),
-                navigationBarHeight
+                systemBarBottom
             );
         }
 
@@ -124,7 +124,7 @@ public class WindowInsetsHelper {
                 fabParams.leftMargin,
                 fabParams.topMargin,
                 fabParams.rightMargin,
-                fabParams.bottomMargin + navigationBarHeight
+                fabParams.bottomMargin + systemBarBottom
             );
             debugScrollButton.setLayoutParams(fabParams);
         }
@@ -144,7 +144,7 @@ public class WindowInsetsHelper {
                 leftDrawer.getPaddingLeft(),
                 totalTopPadding, // Status bar + toolbar height
                 leftDrawer.getPaddingRight(),
-                navigationBarHeight
+                systemBarBottom
             );
         }
 
@@ -159,11 +159,11 @@ public class WindowInsetsHelper {
                 rightDrawer.getPaddingLeft(),
                 totalTopPadding, // Status bar + toolbar height
                 rightDrawer.getPaddingRight(),
-                navigationBarHeight
+                systemBarBottom
             );
         }
 
-        updateWebViewSafeAreaBottom(activity.getWebView(), navigationBarHeight);
+        updateWebViewSafeAreaBottom(activity.getWebView(), systemBarBottom);
     }
 
     /**
@@ -181,14 +181,14 @@ public class WindowInsetsHelper {
 
     /**
      * Update WebView safe area bottom inset for CSS
-     * Sets --safe-area-inset-bottom to navigation bar height
+     * Sets --safe-area-inset-bottom to system bar bottom height
      *
      * @param webView The WebView to update
-     * @param navigationBarHeight Height of the navigation bar in pixels
+     * @param systemBarBottom Height of the system bar bottom in pixels
      */
-    public static void updateWebViewSafeAreaBottom(org.exarhteam.iitc_mobile.IITC_WebView webView, int navigationBarHeight) {
+    public static void updateWebViewSafeAreaBottom(org.exarhteam.iitc_mobile.IITC_WebView webView, int systemBarBottom) {
         if (webView != null) {
-            webView.setSafeAreaBottom(navigationBarHeight);
+            webView.setSafeAreaBottom(systemBarBottom);
         }
     }
 }
