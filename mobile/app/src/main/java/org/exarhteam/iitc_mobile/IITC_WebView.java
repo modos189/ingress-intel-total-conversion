@@ -41,6 +41,7 @@ public class IITC_WebView extends WebView {
     private Runnable mNavHider;
     private boolean mDisableJs = false;
     private int defaultZoom;
+    private int mSafeAreaBottomPx = 0;
 
 
     // init web view
@@ -229,9 +230,17 @@ public class IITC_WebView extends WebView {
      * Set CSS safe-area-inset-bottom for web content
      */
     public void setSafeAreaBottom(int bottomPx) {
+        mSafeAreaBottomPx = bottomPx;
+        applySafeAreaBottom();
+    }
+
+    /**
+     * Apply current safe area bottom inset to CSS
+     */
+    public void applySafeAreaBottom() {
         // Convert pixels to CSS pixels (density-independent)
         float density = getContext().getResources().getDisplayMetrics().density;
-        int bottomCss = Math.round(bottomPx / density);
+        int bottomCss = Math.round(mSafeAreaBottomPx / density);
 
         String safeAreaJs = String.format(
             "document.documentElement.style.setProperty('--safe-area-inset-bottom', '%dpx');",
