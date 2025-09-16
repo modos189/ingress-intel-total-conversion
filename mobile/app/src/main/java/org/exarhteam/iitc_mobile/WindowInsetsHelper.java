@@ -18,21 +18,22 @@ public class WindowInsetsHelper {
             return;
         }
         android.view.View rootView = activity.findViewById(android.R.id.content);
+        rootView.post(() -> {
+            ViewCompat.setOnApplyWindowInsetsListener(rootView, (v, windowInsets) -> {
+                Insets systemBarsInsets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
 
-        ViewCompat.setOnApplyWindowInsetsListener(rootView, (v, windowInsets) -> {
-            Insets systemBarsInsets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
+                v.setPadding(
+                    systemBarsInsets.left,
+                    activity instanceof android.preference.PreferenceActivity ? 0 : systemBarsInsets.top, // PreferenceActivity handles status bar itself
+                    systemBarsInsets.right,
+                    systemBarsInsets.bottom
+                );
 
-            v.setPadding(
-                systemBarsInsets.left,
-                activity instanceof android.preference.PreferenceActivity ? 0 : systemBarsInsets.top, // PreferenceActivity handles status bar itself
-                systemBarsInsets.right,
-                systemBarsInsets.bottom
-            );
+                return windowInsets;
+            });
 
-            return windowInsets;
+            ViewCompat.requestApplyInsets(rootView);
         });
-
-        ViewCompat.requestApplyInsets(rootView);
     }
 
     /**
@@ -45,20 +46,18 @@ public class WindowInsetsHelper {
             return;
         }
         
-        // Remove navigation bar contrast enforcement (removes white background)
-        activity.getWindow().setNavigationBarContrastEnforced(false);
-        
         android.view.View drawerLayout = activity.findViewById(R.id.drawer_layout);
+        drawerLayout.post(() -> {
+            ViewCompat.setOnApplyWindowInsetsListener(drawerLayout, (v, windowInsets) -> {
+                Insets systemBarsInsets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
 
-        ViewCompat.setOnApplyWindowInsetsListener(drawerLayout, (v, windowInsets) -> {
-            Insets systemBarsInsets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
+                applyMainActivityInsets(activity, systemBarsInsets.top, systemBarsInsets.left,
+                                      systemBarsInsets.right, systemBarsInsets.bottom);
+                return windowInsets;
+            });
 
-            applyMainActivityInsets(activity, systemBarsInsets.top, systemBarsInsets.left,
-                                  systemBarsInsets.right, systemBarsInsets.bottom);
-            return windowInsets;
+            ViewCompat.requestApplyInsets(drawerLayout);
         });
-
-        ViewCompat.requestApplyInsets(drawerLayout);
     }
 
     /**
