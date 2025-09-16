@@ -238,9 +238,12 @@ public class IITC_WebView extends WebView {
      * Apply current safe area bottom inset to CSS
      */
     public void applySafeAreaBottom() {
+        // In debug mode, set safe area bottom to 0 since debug panel occupies bottom space
+        int effectiveBottomPx = mIitc.isDebugging() ? 0 : mSafeAreaBottomPx;
+        
         // Convert pixels to CSS pixels (density-independent)
         float density = getContext().getResources().getDisplayMetrics().density;
-        int bottomCss = Math.round(mSafeAreaBottomPx / density);
+        int bottomCss = Math.round(effectiveBottomPx / density);
 
         String safeAreaJs = String.format(
             "document.documentElement.style.setProperty('--safe-area-inset-bottom', '%dpx');",
