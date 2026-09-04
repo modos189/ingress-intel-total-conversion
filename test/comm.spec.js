@@ -5,16 +5,14 @@ import sinon from 'sinon';
 /* global IITC, map */
 /* eslint-disable no-unused-expressions */
 
-// Imported at top level (not in a before hook) and in production order so IITC.comm is set
-// by comm.js before comm_declarative_message_filter.spec attaches the filter to it
-// (a before hook would run after that spec's top-level import
-// and wipe IITC.comm.declarativeMessageFilter).
+// Imported at top level in production order, so each module finds the namespaces the previous ones set.
 // utils.js provides the real time formatters, portal_display.js the real makePermalink,
 // statusbar.js the real IITC.statusbar that requestChannel refreshes when idle.
 await import('../core/code/utils.js');
 // chat.js defines IITC.chat, which comm.js uses for channelState/keepScrollPosition
 await import('../core/code/chat.js');
 await import('../core/code/comm.js');
+await import('../core/code/comm_declarative_message_filter.js');
 await import('../core/code/portal.js');
 await import('../core/code/portal_display.js');
 await import('../core/code/statusbar.js');

@@ -4,7 +4,8 @@ import * as sinon from 'sinon';
 
 /* global IITC, L */
 /* eslint-disable no-unused-expressions */
-import('../core/code/search_query.js');
+await import('../core/code/utils.js');
+await import('../core/code/search_query.js');
 
 describe('IITC.search.Query', () => {
   let query;

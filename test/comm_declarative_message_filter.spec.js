@@ -4,7 +4,7 @@ import { expect } from 'chai';
 /* global IITC */
 /* eslint-disable no-unused-expressions */
 
-import('../core/code/comm_declarative_message_filter.js');
+await import('../core/code/comm_declarative_message_filter.js');
 
 // Define test messages
 const testMessages = [

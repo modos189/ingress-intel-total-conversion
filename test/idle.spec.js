@@ -1,4 +1,4 @@
-import { describe, it, before, beforeEach, afterEach } from 'mocha';
+import { describe, it, before, beforeEach } from 'mocha';
 import { expect } from 'chai';
 import sinon from 'sinon';
 
@@ -18,13 +18,6 @@ describe('idle handling', () => {
   });
 
   beforeEach(() => {
-    window.idleTime = 0;
-    window._idleTimeLimit = window.MAX_IDLE_TIME;
-    window._onResumeFunctions = [];
-  });
-
-  // idle.js replaces the isIdle mock for the whole run, so leave the page awake for the other specs
-  afterEach(() => {
     delete document.hidden;
     window.idleTime = 0;
     window._idleTimeLimit = window.MAX_IDLE_TIME;
