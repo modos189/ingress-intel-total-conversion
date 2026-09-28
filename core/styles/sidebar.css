@@ -141,10 +141,10 @@ h2 {
   box-sizing: border-box;
 
   &.res {
-    background: color-mix(var(--color-res) 60%, black);
+    background: color-mix(in oklab, var(--color-res) 60%, black);
   }
   &.enl {
-    background: color-mix(var(--color-enl) 60%, black);
+    background: color-mix(in oklab, var(--color-enl) 60%, black);
   }
 }
 
