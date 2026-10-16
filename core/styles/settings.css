@@ -272,7 +272,6 @@
   width: 100%;
   padding: 5px 8px;
   border: 0;
-  border-left: 2px solid transparent;
   background: none;
   color: inherit;
   font: inherit;
@@ -280,9 +279,10 @@
   cursor: pointer;
 
   &[aria-current='page'] {
+    border-left: 2px solid transparent;
     border-left-color: var(--color-bg-border);
     color: var(--color-primary);
-    background: rgb(32 168 177 / 11%);
+    background: var(--color-bg);
   }
 }
 
@@ -305,6 +305,10 @@
   flex-direction: column;
   min-width: 0;
   min-height: 0;
+  border: 1px solid var(--color-bg-border);
+  background: var(--color-bg);
+  margin-right: 1em;
+  border-radius: 6px;
 }
 
 /* the head with the way back stays in place; the padding inside the scrolling page leaves room for the
