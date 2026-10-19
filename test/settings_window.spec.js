@@ -141,9 +141,11 @@ describe('settings window', () => {
   it('shows the page chosen in the list, and goes back to the list', () => {
     settings.open();
 
-    click(navLink('window-zeta'));
+    const zetaLink = navLink('window-zeta');
+    click(zetaLink);
     expect(view.root.querySelector('.iitc-settings-page-heading').textContent).to.equal('Zeta');
-    expect(navLink('window-zeta').getAttribute('aria-current')).to.equal('page');
+    expect(navLink('window-zeta')).to.equal(zetaLink);
+    expect(zetaLink.getAttribute('aria-current')).to.equal('page');
     expect(navLink('iitc').hasAttribute('aria-current')).to.be.false;
     expect(view.root.dataset.view).to.equal('page');
 

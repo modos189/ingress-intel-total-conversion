@@ -130,7 +130,10 @@ const choose = (pageId) => {
   const another = pageId !== view.pageId;
   view.pageId = pageId;
   view.root.dataset.view = 'page';
-  drawNav();
+  view.root.querySelectorAll('.iitc-settings-page-link').forEach((link) => {
+    if (link.dataset.page === pageId) link.setAttribute('aria-current', 'page');
+    else link.removeAttribute('aria-current');
+  });
   drawPage();
   // another page starts at its top
   if (another) content().scrollTop = 0;
